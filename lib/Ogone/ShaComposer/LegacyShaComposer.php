@@ -44,7 +44,7 @@ class LegacyShaComposer implements ShaComposer
      * @param array $parameters
      * @return string
      */
-    public function compose(array $parameters)
+    public function compose(array $parameters, $useLatinCharset = false)
     {
         $parameters = array_change_key_case($parameters, CASE_LOWER);
 

@@ -26,7 +26,6 @@
         "php": ">=7.0",
         "ext-libxml": "*",
         "ext-simplexml": "*",
-        "ext-intl": "*",
         "monolog/monolog": "^1.24"
     },
     "require-dev" : {
