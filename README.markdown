@@ -5,7 +5,7 @@ It provides the necessary components to complete a correct payment flow with the
 
 Requirements:
 
-- PHP 5.3
+- PHP >=7.0
 - network connection between your webserver and the Ogone platform
 
 

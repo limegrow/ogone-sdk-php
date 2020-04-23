@@ -65,6 +65,23 @@ class FlexCheckoutPaymentRequest extends AbstractPaymentRequest
     }
 
     /**
+     * Force saving alias
+     * @param bool $force
+     * @return $this
+     */
+    public function setForceAliasSave($force = false) {
+        if ($force) {
+            if (!isset($this->parameters['alias.aliasid'])) {
+                $this->parameters['alias.aliasid'] = '';
+            }
+
+            $this->setStorePermanently('Y');
+        }
+
+        return $this;
+    }
+
+    /**
      * It indicates whether you want to store a temporary (N) or indefinite (Y) Alias. The possible values are:
      * "N": the alias will be deleted after 2 hours.
      * "Y": the alias will be stored indefinitely, for future use.

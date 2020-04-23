@@ -18,16 +18,56 @@ use Ogone\ShaComposer\ShaComposer;
 
 /**
  * Class AbstractRequest
+ * @method $this setEmail($value)
+ * @method mixed getEmail()
+ * @method $this setOrderid($value)
+ * @method mixed getOrderid()
+ * @method $this setCom($value)
+ * @method mixed getCom()
+ * @method $this setAmount($value)
+ * @method mixed getAmount()
+ * @method $this setCurrency($value)
+ * @method mixed getCurrency()
+ * @method $this setOwneraddress($value)
+ * @method mixed getOwneraddress()
+ * @method $this setOwnerzip($value)
+ * @method mixed getOwnerzip()
+ * @method $this setOwnertown($value)
+ * @method mixed getOwnertown()
+ * @method $this setOwnercountry($value)
+ * @method mixed getOwnercountry()
+ * @method $this setOwnercty($value)
+ * @method mixed getOwnercty()
+ * @method $this setOwnertelno($value)
+ * @method mixed getOwnertelno()
+ * @method $this setComplus($value)
+ * @method mixed getComplus()
+ * @method $this setTp($value)
+ * @method mixed getTp()
  * @method $this setCuid($value)
  * @method mixed getCuid()
  * @method $this setCivility($value)
  * @method mixed getCivility()
  * @method $this setRemoteAddr($value)
  * @method mixed getRemoteAddr()
+ * @method $this setOrdershipmeth($value)
+ * @method mixed getOrdershipmeth()
+ * @method $this setOrdershipcost($value)
+ * @method mixed getOrdershipcost()
+ * @method $this setOrdershiptax($value)
+ * @method mixed getOrdershiptax()
+ * @method $this setOrdershiptaxcode($value)
+ * @method mixed getOrdershiptaxcode()
+ * @method $this setDatein($value)
+ * @method mixed getDatein()
+ * @method $this setRefCustomerref($value)
+ * @method mixed getRefCustomerref()
  * @method $this setAddrmatch($value)
  * @method mixed getAddrmatch()
  * @method $this setEcomBilltoPostalCity($value)
  * @method mixed getEcomBilltoPostalCity()
+ * @method $this setEcomBilltoPostalCounty($value)
+ * @method mixed getEcomBilltoPostalCounty()
  * @method $this setEcomBilltoPostalCountrycode($value)
  * @method mixed getEcomBilltoPostalCountrycode()
  * @method $this setEcomBilltoPostalNameFirst($value)
@@ -46,6 +86,8 @@ use Ogone\ShaComposer\ShaComposer;
  * @method mixed getEcomBilltoPostalStreetNumber()
  * @method $this setEcomShiptoPostalCity($value)
  * @method mixed getEcomShiptoPostalCity()
+ * @method $this setEcomShiptoPostalCounty($value)
+ * @method mixed getEcomShiptoPostalCounty()
  * @method $this setEcomShiptoPostalCountrycode($value)
  * @method mixed getEcomShiptoPostalCountrycode()
  * @method $this setEcomShiptoPostalNameFirst($value)
@@ -64,7 +106,26 @@ use Ogone\ShaComposer\ShaComposer;
  * @method mixed getEcomShiptoPostalStreetNumber()
  * @method $this setEcomShiptoDob($value)
  * @method mixed getEcomShiptoDob()
- *
+ * @method $this setEcomConsumerGender($value)
+ * @method mixed getEcomConsumerGender()
+ * @method $this setEcomBilltoPostalNamePrefix($value)
+ * @method mixed getEcomBilltoPostalNamePrefix()
+ * @method $this setEcomShipitoPostalNamePrefix($value)
+ * @method mixed getEcomShipitoPostalNamePrefix()
+ * @method $this setEcomShiptoTva($value)
+ * @method mixed getEcomShiptoTva()
+ * @method $this setEcomShiptoCompany($value)
+ * @method mixed getEcomShiptoCompany()
+ * @method $this setEcomShiptoTelecomFaxNumber($value)
+ * @method mixed getEcomShiptoTelecomFaxNumber()
+ * @method $this setEcomShiptoTelecomPhoneNumber($value)
+ * @method mixed getEcomShiptoTelecomPhoneNumber()
+ * @method $this setEcomShiptoOnlineEmail($value)
+ * @method mixed getEcomShiptoOnlineEmail()
+ * @method $this setRefCustomerid($value)
+ * @method mixed getRefCustomerid()
+ * @method $this setCostcenter($value)
+ * @method mixed getCostcenter()
  * @package Ogone
  */
 abstract class AbstractRequest implements Request
@@ -83,15 +144,7 @@ abstract class AbstractRequest implements Request
     /** @var LoggerInterface|null */
     protected $logger;
 
-    /** Note this is public to allow easy modification, if need be. */
-    public $allowedlanguages = array(
-        'en_US' => 'English', 'cs_CZ' => 'Czech', 'de_DE' => 'German',
-        'dk_DK' => 'Danish', 'el_GR' => 'Greek', 'es_ES' => 'Spanish',
-        'fr_FR' => 'French', 'it_IT' => 'Italian', 'ja_JP' => 'Japanese',
-        'nl_BE' => 'Flemish', 'nl_NL' => 'Dutch', 'no_NO' => 'Norwegian',
-        'pl_PL' => 'Polish', 'pt_PT' => 'Portugese', 'ru_RU' => 'Russian',
-        'se_SE' => 'Swedish', 'sk_SK' => 'Slovak', 'tr_TR' => 'Turkish',
-    );
+
 
     protected $ogoneFields = array(
         'orig', 'shoppingcartextensionid', 'pspid', 'orderid', 'com', 'amount', 'currency', 'language', 'cn', 'email',
@@ -113,6 +166,10 @@ abstract class AbstractRequest implements Request
         'browserscreenwidth', 'browsertimezone', 'browseruseragent',
         // Optional integration data: Delivery and Invoicing data.
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/additional-data/delivery-and-invoicing-data
+        // Klarna
+        // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/klarna
+        // After pay
+        // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/afterpay
         'addrmatch', 'civility', 'cuid', 'ecom_billto_postal_city', 'ecom_billto_postal_countrycode',
         'ecom_billto_postal_name_first', 'ecom_billto_postal_name_last', 'ecom_billto_postal_postalcode',
         'ecom_billto_postal_street_line1', 'ecom_billto_postal_street_line2', 'ecom_billto_postal_street_line3',
@@ -121,12 +178,23 @@ abstract class AbstractRequest implements Request
         'ecom_shipto_postal_name_first', 'ecom_shipto_postal_name_last', 'ecom_shipto_postal_name_prefix',
         'ecom_shipto_postal_postalcode', 'ecom_shipto_postal_state',
         'ecom_shipto_postal_street_line1', 'ecom_shipto_postal_street_line2','ecom_shipto_postal_street_line3',
-        'ecom_shipto_postal_street_number', 'ordershipcost', 'ordershipmeth', 'ordershiptaxcode',
+        'ecom_shipto_postal_street_number', 'ecom_consumer_gender',
+        'ecom_billto_postal_name_prefix', 'ecom_shipto_postal_name_prefix',
+        'ecom_billto_postal_state', 'ecom_shipto_postal_state',
+        'ecom_billto_tva', 'ecom_shipto_tva',
+        'ecom_billto_company', 'ecom_shipto_company',
+        'ecom_billto_telecom_fax_number', 'ecom_shipto_telecom_fax_number',
+        'ecom_billto_telecom_phone_number', 'ecom_shipto_telecom_phone_number',
+        // Klarna
+        'ecom_billto_postal_county','ecom_shipto_postal_county',
+        'ecom_shipto_county',
+        'ordershipcost', 'ordershiptax', 'ordershipmeth', 'ordershiptaxcode',
+        'datein', 'ref_customerref', 'costcenter', 'ref_customerid',
         // Optional integration data: Order data ("ITEM" parameters).
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/additional-data/order-data
         'itemattributes*', 'itemcategory*', 'itemcomments*', 'itemdesc*', 'itemdiscount*',
         'itemid*', 'itemname*', 'itemprice*', 'itemquant*', 'itemquantorig*',
-        'itemunitofmeasure*', 'itemvat*', 'itemvatcode*', 'itemweight*',
+        'itemunitofmeasure*', 'itemvat*', 'itemvatcode*', 'itemweight*', 'taxincluded*',
         // Optional integration data: Travel data.
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/additional-data/travel-data
         'datatype', 'aiairname', 'aitinum', 'aitidate', 'aiconjti', 'aipasname',
@@ -166,11 +234,19 @@ abstract class AbstractRequest implements Request
         return $this->ogoneUri;
     }
 
-    /** Ogone uri to send the customer to. Usually PaymentRequest::TEST or PaymentRequest::PRODUCTION */
+    /**
+     * Ogone uri to send the customer to.
+     * Usually PaymentRequest::TEST or PaymentRequest::PRODUCTION
+     *
+     * @param string $ogoneUri
+     * @return $this
+     */
     public function setOgoneUri($ogoneUri)
     {
         $this->validateOgoneUri($ogoneUri);
         $this->ogoneUri = $ogoneUri;
+
+        return $this;
     }
 
     /**
@@ -245,9 +321,11 @@ abstract class AbstractRequest implements Request
      */
     public function setLanguage($language)
     {
-        if (!array_key_exists($language, $this->allowedlanguages)) {
-            throw new InvalidArgumentException('Invalid language ISO code');
+        // Workaround for Denmark browsers
+        if (strtolower($language) === 'da_dk') {
+            $language = 'dk_DK';
         }
+
         $this->parameters['language'] = $language;
 
         return $this;
@@ -444,6 +522,11 @@ abstract class AbstractRequest implements Request
         if ($this->logger) {
             $this->logger->debug(sprintf('Request %s', get_class($this)), $this->parameters);
         }
+
+        // Validate fields
+        foreach ($this->getData() as $key => $value) {
+            $this->validateField($key, $value);
+        }
     }
 
     protected function validateUri($uri)
@@ -468,6 +551,7 @@ abstract class AbstractRequest implements Request
     /**
      * Validate Y/N Values.
      *
+     * @deprecated Use validateField() instead of
      * @param $value
      */
     protected function validateYesNo($value)
@@ -480,6 +564,7 @@ abstract class AbstractRequest implements Request
     /**
      * Validate Win3DS.
      *
+     * @deprecated Use validateField() instead of
      * @param $win3ds
      */
     protected function validateWin3DS($win3ds)
@@ -604,6 +689,21 @@ abstract class AbstractRequest implements Request
         }
 
         return $params;
+    }
+
+    /**
+     * Validate Field
+     * @param string $key
+     * @param string $value
+     * @throws InvalidArgumentException
+     */
+    public function validateField($key, $value)
+    {
+        $validator = new Validator($key, $value, [
+            'data' => $this->parameters
+        ]);
+
+        $validator->validate();
     }
 
     /**

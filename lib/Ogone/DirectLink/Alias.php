@@ -10,14 +10,11 @@
 
 namespace Ogone\DirectLink;
 
+use Ogone\AbstractAlias;
 use InvalidArgumentException;
 
-class Alias
+class Alias extends AbstractAlias
 {
-
-    /** @var string */
-    private $alias;
-
     /** @var string */
     private $cardName;
 
@@ -47,34 +44,80 @@ class Alias
             throw new InvalidArgumentException("Alias cannot contain special characters");
         }
 
-        $this->alias = $alias;
-        $this->cardName = $cardName;
-        $this->cardNumber = $cardNumber;
-        $this->expiryDate = $expiryDate;
+        $this->setAlias($alias)
+            ->setCardName($cardName)
+            ->setCardNumber($cardNumber)
+            ->setExpiryDate($expiryDate);
     }
 
-    public function getAlias()
+    /**
+     * Set Card Name
+     *
+     * @param string $cardName
+     *
+     * @return $this
+     */
+    public function setCardName($cardName)
     {
-        return $this->alias;
+        $this->cardName = $cardName;
+
+        return $this;
     }
 
+    /**
+     * Get Card Name
+     *
+     * @return string|null
+     */
     public function getCardName()
     {
         return $this->cardName;
     }
 
+    /**
+     * Set Card Number
+     *
+     * @param string $cardNumber
+     *
+     * @return $this
+     */
+    public function setCardNumber($cardNumber)
+    {
+        $this->cardNumber = $cardNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get Card Number
+     *
+     * @return string|null
+     */
     public function getCardNumber()
     {
         return $this->cardNumber;
     }
 
+    /**
+     * Set Expiry Date
+     * @param string $expiryDate
+     *
+     * @return $this
+     */
+    public function setExpiryDate($expiryDate)
+    {
+        $this->expiryDate = $expiryDate;
+
+        return $this;
+    }
+
+    /**
+     * Get Expiry Date
+     *
+     * @return string|null
+     */
     public function getExpiryDate()
     {
         return $this->expiryDate;
-    }
-
-    public function __toString()
-    {
-        return (string) $this->alias;
     }
 }

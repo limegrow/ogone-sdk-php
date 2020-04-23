@@ -14,6 +14,7 @@ namespace Ogone\ParameterFilter;
 /** @todo test this */
 class ShaInParameterFilter implements ParameterFilter
 {
+    // @see \Ogone\AbstractRequest::$ogoneFields
     private $allowed = array(
         'ACCEPTURL', 'ADDMATCH', 'ADDRMATCH', 'ALIAS', 'ALIASOPERATION', 'ALIASPERSISTEDAFTERUSE', 'ALIASUSAGE',
         'ALLOWCORRECTION', 'AMOUNT', 'AMOUNTHTVA', 'AMOUNTTVA', 'BACKURL', 'BGCOLOR',
@@ -51,17 +52,59 @@ class ShaInParameterFilter implements ParameterFilter
         'VERSION', 'WBTU_MSISDN', 'WBTU_ORDERID', 'WEIGHTUNIT', 'WIN3DS', 'WITHROOT', 'CARD.PAYMENTMETHOD',
         'ACCOUNT.PSPID', 'ALIAS.ALIASID', 'ALIAS.ORDERID', 'ALIAS.STOREPERMANENTLY', 'PARAMETERS.ACCEPTURL',
         'PARAMETERS.EXCEPTIONURL', 'LAYOUT.TEMPLATENAME', 'LAYOUT.LANGUAGE',
+        // Optional integration data: Order data ("ITEM" parameters).
+        // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/additional-data/order-data
+        'ITEMATTRIBUTES*', 'ITEMCATEGORY*', 'ITEMCOMMENTS*', 'ITEMDESC*', 'ITEMDISCOUNT*',
+        'ITEMID*', 'ITEMNAME*', 'ITEMPRICE*', 'ITEMQUANT*', 'ITEMQUANTORIG*',
+        'ITEMUNITOFMEASURE*', 'ITEMVAT*', 'ITEMVATCODE*', 'ITEMWEIGHT*', 'TAXINCLUDED*',
+        // Optional integration data: Travel data.
+        // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/additional-data/travel-data
+        'DATATYPE', 'AIAIRNAME', 'AITINUM', 'AITIDATE', 'AICONJTI', 'AIPASNAME',
+        'AIEXTRAPASNAME*', 'AICHDET', 'AIAIRTAX', 'AIVATAMNT', 'AIVATAPPL', 'AITYPCH',
+        'AIEYCD', 'AIIRST', 'AIORCITY*', 'AIORCITYL*', 'AIDESTCITY*', 'AIDESTCITYL*',
+        'AISTOPOV*', 'AICARRIER*', 'AIBOOKIND*', 'AIFLNUM*', 'AIFLDATE*', 'AICLASS*',
         // @see https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/directlink/request-a-new%20order#processing-transactions-with-stored-credentials
         'COF_INITIATOR', 'COF_SCHEDULE', 'COF_TRANSACTION',
         // @see https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/directlink-3-d/3-d%20secure%20v2
         'BROWSERACCEPTHEADER', 'BROWSERCOLORDEPTH', 'BROWSERJAVAENABLED', 'BROWSERLANGUAGE', 'BROWSERSCREENHEIGHT',
         'BROWSERSCREENWIDTH', 'BROWSERTIMEZONE', 'BROWSERUSERAGENT',
-        'SHOPPINGCARTEXTENSIONID', 'ORIG'
+        'SHOPPINGCARTEXTENSIONID', 'ORIG',
+        // Invoicing
+        // @see https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/additional-data/delivery-and-invoicing-data
+        // @see https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/klarna
+        // @see https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/afterpay
+        'ECOM_BILLTO_POSTAL_COUNTY','ECOM_SHIPTO_POSTAL_COUNTY',
+        //'ECOM_SHIPTO_COUNTY',
+        'ECOM_SHIPTO_POSTAL_STREET_NUMBER', 'ECOM_CONSUMER_GENDER',
+        'ECOM_SHIPTO_POSTAL_NAME_PREFIX',
+        'ECOM_SHIPTO_POSTAL_STATE',
+        'ECOM_BILLTO_TVA', 'ECOM_SHIPTO_TVA',
+        'ECOM_BILLTO_COMPANY', 'ECOM_SHIPTO_COMPANY',
+        'ECOM_SHIPTO_TELECOM_FAX_NUMBER',
+        'ECOM_SHIPTO_TELECOM_PHONE_NUMBER',
+        'ORDERSHIPCOST', 'ORDERSHIPTAX', 'ORDERSHIPMETH', 'ORDERSHIPTAXCODE',
+        'DATEIN', 'REF_CUSTOMERREF'
     );
 
     public function filter(array $parameters)
     {
         $parameters = array_change_key_case($parameters, CASE_UPPER);
-        return array_intersect_key($parameters, array_flip($this->allowed));
+
+        $result = [];
+        foreach ($parameters as $parameter => $value) {
+            if (in_array($parameter, $this->allowed)) {
+                $result[$parameter] = $value;
+                continue;
+            }
+
+            // Check if a string ends with a number
+            // Check parameters is like ITEMID*
+            $last = mb_substr($parameter, -1, 1, 'UTF-8');
+            if (is_numeric($last) && in_array(rtrim($parameter, $last) . '*', $this->allowed)) {
+                $result[$parameter] = $value;
+            }
+        }
+
+        return $result;
     }
 }

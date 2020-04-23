@@ -15,55 +15,45 @@ use Ogone\DirectLink\PaymentOperation;
 
 abstract class AbstractPaymentRequest extends AbstractRequest
 {
-    /** Note this is public to allow easy modification, if need be. */
-    public $allowedcurrencies = array(
-        'AED',
-        'ANG',
-        'ARS',
-        'AUD',
-        'AWG',
-        'BGN',
-        'BRL',
-        'BYR',
-        'CAD',
-        'CHF',
-        'CNY',
-        'CZK',
-        'DKK',
-        'EEK',
-        'EGP',
-        'EUR',
-        'GBP',
-        'GEL',
-        'HKD',
-        'HRK',
-        'HUF',
-        'ILS',
-        'ISK',
-        'JPY',
-        'KRW',
-        'LTL',
-        'LVL',
-        'MAD',
-        'MXN',
-        'MYR',
-        'NOK',
-        'NZD',
-        'PLN',
-        'RON',
-        'RUB',
-        'SEK',
-        'SGD',
-        'SKK',
-        'THB',
-        'TRY',
-        'UAH',
-        'USD',
-        'XAF',
-        'XOF',
-        'XPF',
-        'ZAR'
-    );
+    const MODE_TEST = 'test';
+    const MODE_PRODUCTION = 'production';
+
+    /**
+     * Set Mode
+     *
+     * @param string $mode
+     * @return $this
+     */
+    public function setMode($mode)
+    {
+        if ($mode === self::MODE_TEST) {
+            return $this->setOgoneUri(self::TEST);
+        } elseif ($mode === self::MODE_PRODUCTION) {
+            return $this->setOgoneUri(self::PRODUCTION);
+        }
+
+        throw new InvalidArgumentException('Invalid mode parameter');
+    }
+
+    /**
+     * Set Test Mode
+     *
+     * @return $this
+     */
+    public function setTestMode()
+    {
+        return $this->setMode(self::MODE_TEST);
+    }
+
+    /**
+     * Set Production Mode
+     *
+     * @return $this
+     */
+    public function setProductionMode()
+    {
+        return $this->setMode(self::MODE_PRODUCTION);
+    }
 
     public function setOrderid($orderid)
     {
@@ -96,18 +86,20 @@ abstract class AbstractPaymentRequest extends AbstractRequest
 
     /**
      * Set amount in cents, eg EUR 12.34 is written as 1234
+     *
+     * @param $amount
+     * @return $this
      */
     public function setAmount($amount)
     {
         if (!is_int($amount)) {
             throw new InvalidArgumentException("Integer expected. Amount is always in cents");
         }
-        if ($amount <= 0) {
-            throw new InvalidArgumentException("Amount must be a positive number");
-        }
+
         if ($amount >= 1.0E+15) {
             throw new InvalidArgumentException("Amount is too high");
         }
+
         $this->parameters['amount'] = $amount;
 
         return $this;
@@ -115,9 +107,6 @@ abstract class AbstractPaymentRequest extends AbstractRequest
 
     public function setCurrency($currency)
     {
-        if (!in_array(strtoupper($currency), $this->allowedcurrencies)) {
-            throw new InvalidArgumentException("Unknown currency");
-        }
         $this->parameters['currency'] = $currency;
 
         return $this;
@@ -253,7 +242,7 @@ abstract class AbstractPaymentRequest extends AbstractRequest
         $this->validateUri($uri);
         $this->setTp($uri);
     }
-    
+
     /** Alias for setTp */
     public function setStaticTemplate($tp)
     {

@@ -1,7 +1,10 @@
 {
     "name": "ingenico/ogone-sdk-php",
     "description": "Ingenico SDK for PHP",
-    "version": "1.0.0",
+    "version": "2.0.0",
+    "license": [
+        "OSL"
+    ],
     "authors": [
         {
             "name": "Limegrow",
@@ -27,7 +30,7 @@
         "ext-libxml": "*",
         "ext-simplexml": "*",
         "ext-intl": "*",
-        "monolog/monolog": "^1.24"
+        "monolog/monolog": "*"
     },
     "require-dev" : {
         "phpunit/phpunit": "^7",

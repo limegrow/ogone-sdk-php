@@ -89,7 +89,8 @@ class DirectLinkPaymentRequest extends AbstractPaymentRequest
      */
     public function setAlias(Alias $alias)
     {
-        $this->parameters['alias'] = $alias->__toString();
+        $this->parameters['alias'] = $alias->getAlias();
+        $this->parameters['aliasOperation'] = $alias->getAliasOperation();
 
         return $this;
     }

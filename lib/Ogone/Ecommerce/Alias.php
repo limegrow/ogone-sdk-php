@@ -1,22 +1,15 @@
 <?php
+
 namespace Ogone\Ecommerce;
 
+use Ogone\AbstractAlias;
 use InvalidArgumentException;
 
-class Alias
+class Alias extends AbstractAlias
 {
 
     const OPERATION_BY_MERCHANT = 'BYMERCHANT';
     const OPERATION_BY_PSP = 'BYPSP';
-
-    /** @var string */
-    private $aliasOperation;
-
-    /** @var string */
-    private $aliasUsage;
-
-    /** @var string */
-    private $alias;
 
     public function __construct($alias, $aliasOperation = self::OPERATION_BY_MERCHANT, $aliasUsage = null)
     {
@@ -28,48 +21,9 @@ class Alias
             throw new InvalidArgumentException("Alias cannot contain special characters");
         }
 
-        $this->aliasOperation = $aliasOperation;
-        $this->aliasUsage = $aliasUsage;
-        $this->alias = $alias;
+        $this->setAlias($alias)
+            ->setAliasUsage($aliasUsage)
+            ->setAliasOperation($aliasOperation);
     }
 
-    public function operationByMerchant()
-    {
-        $this->aliasOperation = self::OPERATION_BY_MERCHANT;
-    }
-
-    public function operationByPsp()
-    {
-        $this->aliasOperation = self::OPERATION_BY_PSP;
-    }
-
-    public function getAliasOperation()
-    {
-        return $this->aliasOperation;
-    }
-
-    public function getAliasUsage()
-    {
-        return $this->aliasUsage;
-    }
-
-    public function setAliasUsage($aliasUsage)
-    {
-        $this->aliasUsage = $aliasUsage;
-    }
-
-    public function getAlias()
-    {
-        return $this->alias;
-    }
-
-    public function setAlias($alias)
-    {
-        $this->alias = $alias;
-    }
-
-    public function __toString()
-    {
-        return $this->alias;
-    }
 }
