@@ -256,7 +256,7 @@ abstract class AbstractPaymentRequest extends AbstractRequest
         return $this;
     }
 
-    public function setOperation(PaymentOperation $operation)
+    public function setOperation(?PaymentOperation $operation)
     {
         $this->parameters['operation'] = (string) $operation;
 
