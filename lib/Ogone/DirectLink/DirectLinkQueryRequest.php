@@ -34,11 +34,6 @@ class DirectLinkQueryRequest extends AbstractDirectLinkRequest
         );
     }
 
-    public function getValidOgoneUris()
-    {
-        return array(self::TEST, self::PRODUCTION);
-    }
-
     public function validate()
     {
         parent::validate();

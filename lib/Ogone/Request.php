@@ -20,6 +20,4 @@ interface Request
     public function getShaSign();
 
     public function getRequiredFields();
-
-    public function getValidOgoneUris();
 }

@@ -33,11 +33,6 @@ class DirectLinkPaymentRequest extends AbstractPaymentRequest
         );
     }
 
-    public function getValidOgoneUris()
-    {
-        return array(self::TEST, self::PRODUCTION);
-    }
-
     /**
      * Set User ID.
      *

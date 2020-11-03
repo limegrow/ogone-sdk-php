@@ -38,11 +38,6 @@ class FlexCheckoutPaymentRequest extends AbstractPaymentRequest
         );
     }
 
-    public function getValidOgoneUris()
-    {
-        return array(self::TEST, self::PRODUCTION);
-    }
-
     public function setPspId($pspid)
     {
         $this->parameters['account.pspid'] = $pspid;

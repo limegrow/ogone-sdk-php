@@ -32,11 +32,6 @@ class CreateAliasRequest extends AbstractRequest
         );
     }
 
-    public function getValidOgoneUris()
-    {
-        return array(self::TEST, self::PRODUCTION);
-    }
-
     public function setAlias(Alias $alias)
     {
         $this->parameters['alias'] = (string) $alias;

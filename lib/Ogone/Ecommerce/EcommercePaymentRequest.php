@@ -33,11 +33,6 @@ class EcommercePaymentRequest extends AbstractPaymentRequest
         );
     }
 
-    public function getValidOgoneUris()
-    {
-        return array(self::TEST, self::PRODUCTION);
-    }
-
     public function setAlias(Alias $alias)
     {
         $this->parameters['aliasOperation'] = $alias->getAliasOperation();

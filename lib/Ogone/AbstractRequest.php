@@ -542,10 +542,6 @@ abstract class AbstractRequest implements Request
     protected function validateOgoneUri($uri)
     {
         $this->validateUri($uri);
-
-        if (!in_array($uri, $this->getValidOgoneUris())) {
-            throw new InvalidArgumentException('No valid Ogone url');
-        }
     }
 
     /**

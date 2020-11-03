@@ -126,10 +126,12 @@ class Validator
         ],
 
         // 2.2 Invoicing and delivery data
+        // https://epayments-support.ingenico.com/en/integration/all-sales-channels/integrate-with-directlink-server-to-server/guide
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/klarna
         'owneraddress' => [
             'format' => self::TYPE_ALPHANUMERIC,
-            'size' => 35,
+            'size' => 50,
+            // @todo (Klarna accepts max. 35)
         ],
         'ownerzip' => [
             'format' => self::TYPE_ALPHANUMERIC,
@@ -171,11 +173,11 @@ class Validator
         ],
         'ecom_billto_postal_name_first' => [
             'format' => self::TYPE_ALPHANUMERIC,
-            'size' => 35,
+            //'size' => 35,
         ],
         'ecom_billto_postal_name_last' => [
             'format' => self::TYPE_ALPHANUMERIC,
-            'size' => 35,
+            //'size' => 35,
         ],
         'ecom_billto_postal_postalcode' => [
             'format' => self::TYPE_ALPHANUMERIC,
@@ -183,11 +185,11 @@ class Validator
         ],
         'ecom_billto_postal_street_line1' => [
             'format' => self::TYPE_ALPHANUMERIC,
-            'size' => 35,
+            //'size' => 35,
         ],
         'ecom_billto_postal_street_line2' => [
             'format' => self::TYPE_ALPHANUMERIC,
-            'size' => 35,
+            //'size' => 35,
         ],
         'ecom_billto_postal_street_number' => [
             'format' => self::TYPE_ALPHANUMERIC,
@@ -221,11 +223,11 @@ class Validator
         ],
         'ecom_shipto_postal_name_first' => [
             'format' => self::TYPE_ALPHANUMERIC,
-            'size' => 35,
+            //'size' => 35,
         ],
         'ecom_shipto_postal_name_last' => [
             'format' => self::TYPE_ALPHANUMERIC,
-            'size' => 35,
+            //'size' => 35,
         ],
         'ecom_shipto_postal_name_prefix' => [
             'format' => self::TYPE_ALPHANUMERIC,
@@ -241,11 +243,11 @@ class Validator
         ],
         'ecom_shipto_postal_street_line1' => [
             'format' => self::TYPE_ALPHANUMERIC,
-            'size' => 35,
+            //'size' => 35,
         ],
         'ecom_shipto_postal_street_line2' => [
             'format' => self::TYPE_ALPHANUMERIC,
-            'size' => 35,
+            //'size' => 35,
         ],
         'ecom_shipto_postal_street_number' => [
             'format' => self::TYPE_ALPHANUMERIC,

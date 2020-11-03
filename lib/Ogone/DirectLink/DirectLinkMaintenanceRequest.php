@@ -31,11 +31,6 @@ class DirectLinkMaintenanceRequest extends AbstractDirectLinkRequest
         );
     }
 
-    public function getValidOgoneUris()
-    {
-        return array(self::TEST, self::PRODUCTION);
-    }
-
     public function setAmount($amount)
     {
         if (!is_int($amount)) {
