@@ -21,7 +21,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @var array
      */
     protected $ogoneFields = array(
-         'AAVADDRESS',
+        'AAVADDRESS',
         'AAVCHECK',
         'AAVMAIL',
         'AAVNAME',
