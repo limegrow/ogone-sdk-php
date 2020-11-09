@@ -21,7 +21,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @var array
      */
     protected $ogoneFields = array(
-        'AAVADDRESS',
+         'AAVADDRESS',
         'AAVCHECK',
         'AAVMAIL',
         'AAVNAME',
@@ -42,6 +42,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
         'CREATION_STATUS',
         'CREDITDEBIT',
         'CURRENCY',
+        'CVC',
         'CVCCHECK',
         'DCC_COMMPERCENTAGE',
         'DCC_CONVAMOUNT',
@@ -71,6 +72,10 @@ abstract class AbstractResponse implements Response, \ArrayAccess
         'NBRUSAGE',
         'NCSTATUS',
         'NCERROR',
+        'NCERRORCARDNO',
+        'NCERRORCN',
+        'NCERRORCVC',
+        'NCERRORED',
         'NCERRORPLUS',
         'ORDERID',
         'PAYID',
