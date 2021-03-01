@@ -126,6 +126,8 @@ use Ogone\ShaComposer\ShaComposer;
  * @method mixed getRefCustomerid()
  * @method $this setCostcenter($value)
  * @method mixed getCostcenter()
+ * @method $this setDevice($value)
+ * @method mixed getDevice()
  * @package Ogone
  */
 abstract class AbstractRequest implements Request
