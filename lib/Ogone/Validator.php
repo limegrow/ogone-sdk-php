@@ -302,6 +302,16 @@ class Validator
             'size' => 20,
         ],
 
+        // Limonetik
+        // @see https://epayments-support.ingenico.com/en/payment-methods/alternative-payment-methods/limonetik
+        'ecom_shipmethod' => [
+            'format' => self::TYPE_ALPHANUMERIC
+        ],
+        'ecom_shipmethoddetails' => [
+            'format' => self::TYPE_ALPHANUMERIC,
+            'size' => 50,
+        ],
+
         // 2.3 Order details
         // Optional integration data: Order data ("ITEM" parameters).
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/additional-data/order-data
