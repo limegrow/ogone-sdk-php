@@ -1,4 +1,9 @@
 # Changelog
+## [3.1.0] - 2021-05-18
+### Added
+- Implemented Oney payment method
+- Add `CH_AUTHENTICATION_INFO` parameter
+
 ## [3.0.1] - 2021-03-01
 ### Added
 - Add `Device` parameter for Bancontact
