@@ -11,7 +11,8 @@
 namespace Ogone;
 
 use InvalidArgumentException;
-use Psr\Log\LoggerInterface;
+use Ogone\Logger\AdapterInterface;
+use Ogone\Logger\MonologAdapter;
 
 abstract class AbstractResponse implements Response, \ArrayAccess
 {
@@ -100,7 +101,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      */
     protected $shaSign;
 
-    /** @var LoggerInterface|null */
+    /** @var Logger */
     protected $logger;
 
     /**
@@ -127,13 +128,26 @@ abstract class AbstractResponse implements Response, \ArrayAccess
     /**
      * Sets Logger.
      *
-     * @param LoggerInterface|null $logger
+     * @param AdapterInterface $logger
      *
      * @return $this
+     * @throws \Exception
      */
-    public function setLogger(LoggerInterface $logger = null)
+    public function setLogger($logger)
     {
-        $this->logger = $logger;
+        if (interface_exists('\Psr\Log\LoggerInterface') &&
+            $logger instanceof \Psr\Log\LoggerInterface
+        ) {
+            $this->logger = new Logger(
+                new MonologAdapter(['logger' => $logger])
+            );
+        }
+
+        if (!$logger instanceof AdapterInterface) {
+            throw new \Exception('Argument $logger must be instance of AdapterInterface.');
+        }
+
+        $this->logger = new Logger($logger);
 
         return $this;
     }

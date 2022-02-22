@@ -31,7 +31,6 @@
         "ext-simplexml": "*",
         "ext-intl": "*",
         "ext-mbstring": "*",
-        "monolog/monolog": "*"
     },
     "require-dev" : {
         "phpunit/phpunit": "^7",
