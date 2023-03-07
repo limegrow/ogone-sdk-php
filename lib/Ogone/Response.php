@@ -26,13 +26,13 @@ interface Response
      * @param $key
      * @return bool
      */
-    public function hasParam($key);
+    public function hasParam($key): bool;
 
     /**
      * Retrieves a response parameter
      * @param string $key
-     * @throws \InvalidArgumentException
      * @return string
+     *@throws \InvalidArgumentException
      */
-    public function getParam($key);
+    public function getParam(string $key): string;
 }

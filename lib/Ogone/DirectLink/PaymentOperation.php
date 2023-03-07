@@ -2,16 +2,16 @@
 namespace Ogone\DirectLink;
 
 
-class PaymentOperation
+class PaymentOperation implements \Stringable
 {
     const REQUEST_FOR_AUTHORISATION = 'RES';
     const REQUEST_FOR_DIRECT_SALE = 'SAL';
     const REFUND = 'RFD';
     const REQUEST_FOR_PRE_AUTHORISATION = 'PAU';
 
-    protected $operation;
+    protected string $operation;
 
-    public function __construct($operation)
+    public function __construct(string $operation)
     {
         if(!in_array($operation, self::getAllAvailableOperations())) {
             throw new \InvalidArgumentException('Unknown Operation: ' . $operation);
@@ -20,23 +20,18 @@ class PaymentOperation
         $this->operation = $operation;
     }
 
-    public function equals(PaymentOperation $other)
+    public function equals(PaymentOperation $other): bool
     {
         return $this->operation === $other->operation;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->operation;
+        return $this->operation;
     }
 
-    public function getAllAvailableOperations()
+    public function getAllAvailableOperations(): array
     {
-        return array(
-            self::REQUEST_FOR_AUTHORISATION,
-            self::REQUEST_FOR_DIRECT_SALE,
-            self::REFUND,
-            self::REQUEST_FOR_PRE_AUTHORISATION
-        );
+        return [self::REQUEST_FOR_AUTHORISATION, self::REQUEST_FOR_DIRECT_SALE, self::REFUND, self::REQUEST_FOR_PRE_AUTHORISATION];
     }
 } 

@@ -23,22 +23,15 @@ use Ogone\ParameterFilter\ParameterFilter;
 class AllParametersShaComposer implements ShaComposer
 {
     /** @var array of ParameterFilter */
-    private $parameterFilters;
-
-    /**
-     * @var string Passphrase
-     */
-    private $passphrase;
+    private array $parameterFilters;
 
     /**
      * @var HashAlgorithm
      */
-    private $hashAlgorithm;
+    private HashAlgorithm $hashAlgorithm;
 
-    public function __construct(Passphrase $passphrase, HashAlgorithm $hashAlgorithm = null)
+    public function __construct(private readonly string|Passphrase $passphrase, HashAlgorithm $hashAlgorithm = null)
     {
-        $this->passphrase = $passphrase;
-
         $this->addParameterFilter(new GeneralParameterFilter);
 
         $this->hashAlgorithm = $hashAlgorithm ?: new HashAlgorithm(HashAlgorithm::HASH_SHA1);
@@ -47,10 +40,9 @@ class AllParametersShaComposer implements ShaComposer
     /**
      * Compose SHA string based on Ingenico response parameters.
      *
-     * @param array $parameters
      * @param bool $useLatinCharset Deprecated
      */
-    public function compose(array $parameters, $useLatinCharset = false)
+    public function compose(array $parameters, bool $useLatinCharset = false): string
     {
         foreach ($this->parameterFilters as $parameterFilter) {
             $parameters = $parameterFilter->filter($parameters);

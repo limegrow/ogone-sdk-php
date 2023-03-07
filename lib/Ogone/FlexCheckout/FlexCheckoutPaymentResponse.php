@@ -41,36 +41,19 @@ class FlexCheckoutPaymentResponse extends AbstractPaymentResponse
 
     const PARAM_ALIAS_NCERRORED = "ALIAS_NCERRORED";
 
-    protected $ogoneFields = array(
-        'ALIAS_ALIASID',
-        'CARD_BIN',
-        'CARD_BRAND',
-        'CARD_CARDNUMBER',
-        'CARD_CARDHOLDERNAME',
-        'CARD_CVC',
-        'CARD_EXPIRYDATE',
-        'ALIAS_NCERROR',
-        'ALIAS_NCERRORCARDNO',
-        'ALIAS_NCERRORCN',
-        'ALIAS_NCERRORCVC',
-        'ALIAS_NCERRORED',
-        'ALIAS_ORDERID',
-        'ALIAS_STATUS',
-    );
+    protected array $ogoneFields = ['ALIAS_ALIASID', 'CARD_BIN', 'CARD_BRAND', 'CARD_CARDNUMBER', 'CARD_CARDHOLDERNAME', 'CARD_CVC', 'CARD_EXPIRYDATE', 'ALIAS_NCERROR', 'ALIAS_NCERRORCARDNO', 'ALIAS_NCERRORCN', 'ALIAS_NCERRORCVC', 'ALIAS_NCERRORED', 'ALIAS_ORDERID', 'ALIAS_STATUS'];
 
     /**
      * Checks if the response is valid
-     * @param ShaComposer $shaComposer
-     * @return bool
      */
-    public function isValid(ShaComposer $shaComposer)
+    public function isValid(ShaComposer $shaComposer): bool
     {
         return $shaComposer->compose($this->parameters) == $this->shaSign;
     }
 
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return in_array($this->getParam(static::PARAM_ALIAS_STATUS),
-            array(static::STATUS_OK, static::STATUS_ALIAS_UPDATED,));
+            [static::STATUS_OK, static::STATUS_ALIAS_UPDATED]);
     }
 }

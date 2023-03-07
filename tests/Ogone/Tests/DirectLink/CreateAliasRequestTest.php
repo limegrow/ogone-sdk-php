@@ -94,8 +94,7 @@ class CreateAliasRequestTest extends \PHPUnit_Framework_TestCase
         $aliasRequest->validate();
     }
 
-    /** @return CreateAliasRequest*/
-    private function provideMinimalAliasRequest()
+    private function provideMinimalAliasRequest(): CreateAliasRequest
     {
         $aliasRequest = new CreateAliasRequest(new FakeShaComposer);
         $aliasRequest->setPspid('18457454');

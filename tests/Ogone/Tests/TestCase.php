@@ -16,7 +16,7 @@ use Ogone\Ecommerce\EcommercePaymentRequest;
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
     /** @return EcommercePaymentRequest */
-    protected function provideMinimalPaymentRequest()
+    protected function provideMinimalPaymentRequest(): EcommercePaymentRequest
     {
         $paymentRequest = new EcommercePaymentRequest(new FakeShaComposer);
         $paymentRequest->setPspid('123456789');

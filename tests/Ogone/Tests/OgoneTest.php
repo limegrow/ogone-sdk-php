@@ -30,7 +30,7 @@ class OgoneTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function AliasCreationIsSuccessful()
+    public function AliasCreationIsSuccessful(): string
     {
         $passphraseOut = new Passphrase(PASSPHRASE_SHA_OUT);
         $shaOutComposer = new AllParametersShaComposer($passphraseOut);
@@ -47,8 +47,9 @@ class OgoneTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @depends AliasCreationIsSuccessful
+     * @throws \Exception
      */
-    public function DirectLinkPaymentIsSuccessful($alias)
+    public function DirectLinkPaymentIsSuccessful($alias): Alias
     {
         $passphrase = new Passphrase(PASSPHRASE_SHA_IN);
         $shaComposer = new AllParametersShaComposer($passphrase);
@@ -68,7 +69,7 @@ class OgoneTest extends \PHPUnit_Framework_TestCase
         $directLinkRequest->setOperation(new PaymentOperation(PaymentOperation::REQUEST_FOR_DIRECT_SALE));
         $directLinkRequest->validate();
 
-        $body = array();
+        $body = [];
         foreach ($directLinkRequest->toArray() as $key => $value) {
             $body[strtoupper($key)] = $value;
         }
@@ -117,7 +118,7 @@ class OgoneTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    public function provideAliasResponse($createAlias = true, $noValidCardnumber = false)
+    public function provideAliasResponse($createAlias = true, $noValidCardnumber = false): CreateAliasResponse
     {
         /*
          *  Create an alias request to Ogone
@@ -130,7 +131,7 @@ class OgoneTest extends \PHPUnit_Framework_TestCase
         $createAliasRequest->setAccepturl('http://www.example.com');
         $createAliasRequest->setExceptionurl('http://www.example.com');
 
-        if ($createAlias == true) {
+        if ($createAlias) {
             $unique_alias = uniqid('customer_'); // create a unique alias
             $alias = new Alias($unique_alias);
             $createAliasRequest->setAlias($alias);
@@ -138,7 +139,7 @@ class OgoneTest extends \PHPUnit_Framework_TestCase
 
         $createAliasRequest->validate();
 
-        $body = array();
+        $body = [];
         foreach ($createAliasRequest->toArray() as $key => $value) {
             $body[strtoupper($key)] = $value;
         }
@@ -153,16 +154,14 @@ class OgoneTest extends \PHPUnit_Framework_TestCase
         $request = $client->post(null, null, $body);
         $response = $request->send();
 
-        $url = parse_url($response->getInfo('url'));
-        $params = array();
+        $url = parse_url((string) $response->getInfo('url'));
+        $params = [];
         parse_str($url['query'], $params);
 
         /*
          * Validate alias response from Ogone
          */
 
-        $createAliasResponse = new CreateAliasResponse($params);
-
-        return $createAliasResponse;
+        return new CreateAliasResponse($params);
     }
 }

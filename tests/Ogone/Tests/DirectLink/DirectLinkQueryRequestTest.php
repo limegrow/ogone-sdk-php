@@ -60,16 +60,12 @@ class DirectLinkQueryRequestTest extends \PHPUnit_Framework_TestCase
         $directLinkQueryRequest->$method($value);
     }
 
-    public function provideBadParameters()
+    public function provideBadParameters(): array
     {
-        return array(
-            array('setPassword', '12'),
-            array('setUserid', '1'),
-        );
+        return [['setPassword', '12'], ['setUserid', '1']];
     }
 
-    /** @return DirectLinkQueryRequest */
-    private function provideMinimalDirectLinkQueryRequest()
+    private function provideMinimalDirectLinkQueryRequest(): DirectLinkQueryRequest
     {
         $directLinkRequest = new DirectLinkQueryRequest(new FakeShaComposer());
         $directLinkRequest->setPspid('123456');

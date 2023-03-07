@@ -26,11 +26,9 @@ class DirectLinkPaymentRequest extends AbstractPaymentRequest
         $this->ogoneUri = self::TEST;
     }
 
-    public function getRequiredFields()
+    public function getRequiredFields(): array
     {
-        return array(
-            'pspid', 'currency', 'amount', 'orderid', 'userid', 'pswd'
-        );
+        return ['pspid', 'currency', 'amount', 'orderid', 'userid', 'pswd'];
     }
 
     /**
@@ -39,9 +37,9 @@ class DirectLinkPaymentRequest extends AbstractPaymentRequest
      * @param $userid
      * @return $this
      */
-    public function setUserId($userid)
+    public function setUserId($userid): static
     {
-        if (strlen($userid) < 2) {
+        if (strlen((string) $userid) < 2) {
             throw new InvalidArgumentException("User ID is too short");
         }
         $this->parameters['userid'] = $userid;
@@ -55,7 +53,7 @@ class DirectLinkPaymentRequest extends AbstractPaymentRequest
      * @param $password
      * @return $this
      */
-    public function setPassword($password)
+    public function setPassword($password): static
     {
         return $this->setPswd($password);
     }
@@ -66,9 +64,9 @@ class DirectLinkPaymentRequest extends AbstractPaymentRequest
      * @param $password
      * @return $this
      */
-    public function setPswd($password)
+    public function setPswd($password): static
     {
-        if (strlen($password) < 8) {
+        if (strlen((string) $password) < 8) {
             throw new InvalidArgumentException("Password is too short");
         }
         $this->parameters['pswd'] = $password;
@@ -79,10 +77,9 @@ class DirectLinkPaymentRequest extends AbstractPaymentRequest
     /**
      * Set Alias.
      *
-     * @param Alias $alias
      * @return $this
      */
-    public function setAlias(Alias $alias)
+    public function setAlias(Alias $alias): static
     {
         $this->parameters['alias'] = $alias->getAlias();
         $this->parameters['aliasOperation'] = $alias->getAliasOperation();
@@ -93,10 +90,9 @@ class DirectLinkPaymentRequest extends AbstractPaymentRequest
     /**
      * Set ECI.
      *
-     * @param Eci $eci
      * @return $this
      */
-    public function setEci(Eci $eci)
+    public function setEci(Eci $eci): static
     {
         $this->parameters['eci'] = (string) $eci;
 
@@ -109,7 +105,7 @@ class DirectLinkPaymentRequest extends AbstractPaymentRequest
      * @param $cvc
      * @return $this
      */
-    public function setCvc($cvc)
+    public function setCvc($cvc): static
     {
         $this->parameters['cvc'] = $cvc;
 
@@ -122,20 +118,15 @@ class DirectLinkPaymentRequest extends AbstractPaymentRequest
      * @param $creditDebit
      * @return $this
      */
-    public function setCreditDebit($creditDebit)
+    public function setCreditDebit($creditDebit): static
     {
         $this->parameters['creditdebit'] = $creditDebit;
 
         return $this;
     }
 
-    protected function getValidOperations()
+    protected function getValidOperations(): array
     {
-        return array(
-            PaymentOperation::REQUEST_FOR_AUTHORISATION,
-            PaymentOperation::REQUEST_FOR_DIRECT_SALE,
-            PaymentOperation::REFUND,
-            PaymentOperation::REQUEST_FOR_PRE_AUTHORISATION,
-        );
+        return [PaymentOperation::REQUEST_FOR_AUTHORISATION, PaymentOperation::REQUEST_FOR_DIRECT_SALE, PaymentOperation::REFUND, PaymentOperation::REQUEST_FOR_PRE_AUTHORISATION];
     }
 }

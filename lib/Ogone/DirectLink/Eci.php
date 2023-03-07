@@ -9,7 +9,7 @@ namespace Ogone\DirectLink;
  * A default ECI value can be set in the Technical Information page. An ECI value sent along in the transaction, will overwrite the default ECI value.
  * It is the merchant's responsibility to give correct ECI values for the transactions. For e-Commerce, our system sets ECI value 5, 6 or 7 depending on the 3-D Secure authentication result.
  */
-class Eci
+class Eci implements \Stringable
 {
     /** The merchant took the customer's credit card and swiped it through a machine that read the magnetic strip data of the card. */
     const SWIPED = 0;
@@ -38,15 +38,14 @@ class Eci
     /** The customer's first transaction was an e-Commerce transaction, i.e. the customer entered his financial details himself on a secure website (either the merchant's website or our secure platform). The merchant either stored the details himself or had these details stored in our system using an Alias and is now performing another transaction for the same customer (recurring transaction), using the Alias details. */
     const ECOMMERCE_RECURRING = 9;
 
-    /** @var int */
-    protected $code;
-
-    public function __construct($eciCode)
+    /**
+     * @param int $eciCode
+     */
+    public function __construct(protected $code)
     {
-        $this->code = $eciCode;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->code;
     }

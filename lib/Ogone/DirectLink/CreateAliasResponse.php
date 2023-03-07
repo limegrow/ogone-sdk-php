@@ -22,19 +22,18 @@ class CreateAliasResponse extends AbstractResponse
 
     /**
      * Checks if the response is valid
-     * @return bool
      */
-    public function isValid(ShaComposer $shaComposer)
+    public function isValid(ShaComposer $shaComposer): bool
     {
         return $shaComposer->compose($this->parameters) == $this->shaSign;
     }
 
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
-        return in_array($this->getParam('STATUS'), array(self::STATUS_OK, self::STATUS_UPDATED));
+        return in_array($this->getParam('STATUS'), [self::STATUS_OK, self::STATUS_UPDATED]);
     }
 
-    public function getAlias()
+    public function getAlias(): Alias
     {
         return new Alias($this->parameters['ALIAS'], $this->parameters['CN'], $this->parameters['CARDNO'], $this->parameters['ED']);
     }

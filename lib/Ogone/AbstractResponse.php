@@ -20,88 +20,20 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      *
      * @var array
      */
-    protected $ogoneFields = array(
-        'AAVADDRESS',
-        'AAVCHECK',
-        'AAVMAIL',
-        'AAVNAME',
-        'AAVPHONE',
-        'AAVZIP',
-        'ACCEPTANCE',
-        'ALIAS',
-        'AMOUNT',
-        'BIC',
-        'BIN',
-        'BRAND',
-        'CARDNO',
-        'CCCTY',
-        'CH_AUTHENTICATION_INFO',
-        'CN',
-        'COLLECTOR_BIC',
-        'COLLECTOR_IBAN',
-        'COMPLUS',
-        'CREATION_STATUS',
-        'CREDITDEBIT',
-        'CURRENCY',
-        'CVCCHECK',
-        'DCC_COMMPERCENTAGE',
-        'DCC_CONVAMOUNT',
-        'DCC_CONVCCY',
-        'DCC_EXCHRATE',
-        'DCC_EXCHRATESOURCE',
-        'DCC_EXCHRATETS',
-        'DCC_INDICATOR',
-        'DCC_MARGINPERCENTAGE',
-        'DCC_VALIDHOURS',
-        'DEVICEID',
-        'DIGESTCARDNO',
-        'ECI',
-        'ED',
-        'EMAIL',
-        'ENCCARDNO',
-        'FXAMOUNT',
-        'FXCURRENCY',
-        'HTML_ANSWER',
-        'IP',
-        'IPCTY',
-        'MANDATEID',
-        'MOBILEMODE',
-        'NBREMAILUSAGE',
-        'NBRIPUSAGE',
-        'NBRIPUSAGE_ALLTX',
-        'NBRUSAGE',
-        'NCSTATUS',
-        'NCERROR',
-        'NCERRORPLUS',
-        'ORDERID',
-        'PAYID',
-        'PAYIDSUB',
-        'PAYMENT_REFERENCE',
-        'PM',
-        'SCO_CATEGORY',
-        'SCORING',
-        'SEQUENCETYPE',
-        'SIGNDATE',
-        'STATUS',
-        'SUBBRAND',
-        'SUBSCRIPTION_ID',
-        'TICKET',
-        'TRXDATE',
-        'VC',
-    );
+    protected array $ogoneFields = ['AAVADDRESS', 'AAVCHECK', 'AAVMAIL', 'AAVNAME', 'AAVPHONE', 'AAVZIP', 'ACCEPTANCE', 'ALIAS', 'AMOUNT', 'BIC', 'BIN', 'BRAND', 'CARDNO', 'CCCTY', 'CH_AUTHENTICATION_INFO', 'CN', 'COLLECTOR_BIC', 'COLLECTOR_IBAN', 'COMPLUS', 'CREATION_STATUS', 'CREDITDEBIT', 'CURRENCY', 'CVCCHECK', 'DCC_COMMPERCENTAGE', 'DCC_CONVAMOUNT', 'DCC_CONVCCY', 'DCC_EXCHRATE', 'DCC_EXCHRATESOURCE', 'DCC_EXCHRATETS', 'DCC_INDICATOR', 'DCC_MARGINPERCENTAGE', 'DCC_VALIDHOURS', 'DEVICEID', 'DIGESTCARDNO', 'ECI', 'ED', 'EMAIL', 'ENCCARDNO', 'FXAMOUNT', 'FXCURRENCY', 'HTML_ANSWER', 'IP', 'IPCTY', 'MANDATEID', 'MOBILEMODE', 'NBREMAILUSAGE', 'NBRIPUSAGE', 'NBRIPUSAGE_ALLTX', 'NBRUSAGE', 'NCSTATUS', 'NCERROR', 'NCERRORPLUS', 'ORDERID', 'PAYID', 'PAYIDSUB', 'PAYMENT_REFERENCE', 'PM', 'SCO_CATEGORY', 'SCORING', 'SEQUENCETYPE', 'SIGNDATE', 'STATUS', 'SUBBRAND', 'SUBSCRIPTION_ID', 'TICKET', 'TRXDATE', 'VC'];
 
     /**
      * @var array
      */
-    protected $parameters;
+    protected array $parameters;
 
     /**
      * @var string
      */
-    protected $shaSign;
+    protected mixed $shaSign;
 
     /** @var LoggerInterface|null */
-    protected $logger;
+    protected ?LoggerInterface $logger = null;
 
     /**
      * @param array $httpRequest Typically $_REQUEST
@@ -119,9 +51,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
         // filter request for Ogone parameters
         $this->parameters = $this->filterRequestParameters($httpRequest);
 
-        if ($this->logger) {
-            $this->logger->debug(sprintf('Response %s', get_class($this)), $this->parameters);
-        }
+        $this->logger?->debug(sprintf('Response %s', static::class), $this->parameters);
     }
 
     /**
@@ -131,7 +61,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      *
      * @return $this
      */
-    public function setLogger(LoggerInterface $logger = null)
+    public function setLogger(LoggerInterface $logger = null): static
     {
         $this->logger = $logger;
 
@@ -141,11 +71,9 @@ abstract class AbstractResponse implements Response, \ArrayAccess
     /**
      * Filter http request parameters.
      *
-     * @param array $requestParameters
      *
-     * @return array
      */
-    protected function filterRequestParameters(array $requestParameters)
+    protected function filterRequestParameters(array $requestParameters): array
     {
         // filter request for Ogone parameters
         return array_intersect_key($requestParameters, array_flip($this->ogoneFields));
@@ -154,13 +82,11 @@ abstract class AbstractResponse implements Response, \ArrayAccess
     /**
      * Set Ogone SHA sign.
      *
-     * @param array $parameters
      *
      * @throws \InvalidArgumentException
      *
-     * @return mixed
      */
-    protected function extractShaSign(array $parameters)
+    protected function extractShaSign(array $parameters): mixed
     {
         if (!array_key_exists(self::SHASIGN_FIELD, $parameters) || '' == $parameters[self::SHASIGN_FIELD]) {
             throw new InvalidArgumentException('SHASIGN parameter not present in parameters.');
@@ -176,7 +102,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      *
      * @return bool
      */
-    public function hasParam($key)
+    public function hasParam($key): bool
     {
         return array_key_exists($key, $this->parameters);
     }
@@ -186,16 +112,16 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      *
      * @param string $key
      *
-     * @throws \InvalidArgumentException
      * @return string
+     * @throws \InvalidArgumentException
      */
-    public function getParam($key)
+    public function getParam(string $key): string
     {
         // always use uppercase
         $key = strtoupper($key);
 
         if (!$this->hasParam($key)) {
-            throw new InvalidArgumentException('Parameter '.$key.' does not exist.');
+            throw new InvalidArgumentException('Parameter ' . $key . ' does not exist.');
         }
 
         return $this->parameters[$key];
@@ -208,7 +134,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      */
     public function setParam($key, $value)
     {
-        $key = strtoupper($key);
+        $key = strtoupper((string) $key);
         $this->parameters[$key] = $value;
     }
 
@@ -216,27 +142,21 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * Get all parameters + SHASIGN
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
-        return $this->parameters + array('SHASIGN' => $this->shaSign);
+        return $this->parameters + ['SHASIGN' => $this->shaSign];
     }
 
     /**
      * Implementation of \ArrayAccess::offsetSet()
      *
-     * @param string $offset
-     * @param mixed $value
-     * @return void
      * @link http://www.php.net/manual/en/arrayaccess.offsetset.php
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value):void
     {
-        $offset = strtoupper($offset);
-        if (is_null($offset)) {
-            $this->parameters[] = $value;
-        } else {
-            $this->parameters[$offset] = $value;
-        }
+        $offset = strtoupper((string) $offset);
+
+        $this->parameters[$offset] = $value;
     }
 
     /**
@@ -246,7 +166,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @return bool
      * @link http://www.php.net/manual/en/arrayaccess.offsetexists.php
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         $offset = strtoupper($offset);
         return isset($this->parameters[$offset]);
@@ -259,7 +179,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @return void
      * @link http://www.php.net/manual/en/arrayaccess.offsetunset.php
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $offset = strtoupper($offset);
         unset($this->parameters[$offset]);
@@ -272,10 +192,10 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @return mixed
      * @link http://www.php.net/manual/en/arrayaccess.offsetget.php
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         $offset = strtoupper($offset);
-        return isset($this->parameters[$offset]) ? $this->parameters[$offset] : null;
+        return $this->parameters[$offset] ?? null;
     }
 
     /**
@@ -289,12 +209,12 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      */
     public function __call($method, $arguments)
     {
-        $key = strtoupper(substr($method, 3, strlen($method)));
-        switch (substr($method, 0, 3)) {
+        $key = strtoupper(substr((string) $method, 3, strlen((string) $method)));
+        switch (substr((string) $method, 0, 3)) {
             case 'get':
-                return isset($this->parameters[$key]) ? $this->parameters[$key] : null;
+                return $this->parameters[$key] ?? null;
             case 'set':
-                $this->parameters[$key] = isset($arguments[0]) ? $arguments[0] : null;
+                $this->parameters[$key] = $arguments[0] ?? null;
                 return $this;
             case 'uns':
                 unset($this->parameters[$key]);
@@ -303,6 +223,6 @@ abstract class AbstractResponse implements Response, \ArrayAccess
                 return isset($this->parameters[$key]);
         }
 
-        throw new \Exception(sprintf('Invalid method %s::%s', get_class($this), $method));
+        throw new \Exception(sprintf('Invalid method %s::%s', static::class, $method));
     }
 }

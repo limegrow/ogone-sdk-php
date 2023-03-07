@@ -2,14 +2,14 @@
 
 namespace Ogone;
 
-class HashAlgorithm
+class HashAlgorithm implements \Stringable
 {
     const HASH_SHA1 = 'sha1';
     const HASH_SHA256 = 'sha256';
     const HASH_SHA512 = 'sha512';
 
     /** @var string */
-    private $algorithm;
+    private string $algorithm;
 
     /**
      * @param $algorithm
@@ -17,7 +17,7 @@ class HashAlgorithm
      */
     public function __construct($algorithm)
     {
-        if (!in_array($algorithm, array(self::HASH_SHA1, self::HASH_SHA256, self::HASH_SHA512))) {
+        if (!in_array($algorithm, [self::HASH_SHA1, self::HASH_SHA256, self::HASH_SHA512])) {
             throw new \InvalidArgumentException(
                 $algorithm . ' is not supported, only sha1, sha256 and sha512 are allowed.'
             );
@@ -26,8 +26,8 @@ class HashAlgorithm
         $this->algorithm = $algorithm;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->algorithm;
+        return $this->algorithm;
     }
 }

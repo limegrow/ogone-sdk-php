@@ -16,13 +16,13 @@ use InvalidArgumentException;
 class Alias extends AbstractAlias
 {
     /** @var string */
-    private $cardName;
+    private string $cardName;
 
     /** @var string */
-    private $cardNumber;
+    private string $cardNumber;
 
     /** @var string */
-    private $expiryDate;
+    private string $expiryDate;
 
     /**
      * @param $alias
@@ -30,17 +30,17 @@ class Alias extends AbstractAlias
      * @param string|null $cardNumber
      * @param string|null $expiryDate
      */
-    public function __construct($alias, $cardName = null, $cardNumber = null, $expiryDate = null)
+    public function __construct($alias, string $cardName = null, string $cardNumber = null, string $expiryDate = null)
     {
         if (empty($alias)) {
             throw new InvalidArgumentException("Alias cannot be empty");
         }
 
-        if (strlen($alias) > 50) {
+        if (strlen((string) $alias) > 50) {
             throw new InvalidArgumentException("Alias is too long");
         }
 
-        if (preg_match('/[^a-zA-Z0-9_-]/', $alias)) {
+        if (preg_match('/[^a-zA-Z0-9_-]/', (string) $alias)) {
             throw new InvalidArgumentException("Alias cannot contain special characters");
         }
 
@@ -53,11 +53,10 @@ class Alias extends AbstractAlias
     /**
      * Set Card Name
      *
-     * @param string $cardName
      *
      * @return $this
      */
-    public function setCardName($cardName)
+    public function setCardName(string $cardName): static
     {
         $this->cardName = $cardName;
 
@@ -66,10 +65,8 @@ class Alias extends AbstractAlias
 
     /**
      * Get Card Name
-     *
-     * @return string|null
      */
-    public function getCardName()
+    public function getCardName(): ?string
     {
         return $this->cardName;
     }
@@ -77,11 +74,10 @@ class Alias extends AbstractAlias
     /**
      * Set Card Number
      *
-     * @param string $cardNumber
      *
      * @return $this
      */
-    public function setCardNumber($cardNumber)
+    public function setCardNumber(string $cardNumber): static
     {
         $this->cardNumber = $cardNumber;
 
@@ -90,21 +86,18 @@ class Alias extends AbstractAlias
 
     /**
      * Get Card Number
-     *
-     * @return string|null
      */
-    public function getCardNumber()
+    public function getCardNumber(): ?string
     {
         return $this->cardNumber;
     }
 
     /**
      * Set Expiry Date
-     * @param string $expiryDate
      *
      * @return $this
      */
-    public function setExpiryDate($expiryDate)
+    public function setExpiryDate(string $expiryDate): static
     {
         $this->expiryDate = $expiryDate;
 
@@ -113,10 +106,8 @@ class Alias extends AbstractAlias
 
     /**
      * Get Expiry Date
-     *
-     * @return string|null
      */
-    public function getExpiryDate()
+    public function getExpiryDate(): ?string
     {
         return $this->expiryDate;
     }

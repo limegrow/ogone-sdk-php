@@ -12,11 +12,14 @@ use InvalidArgumentException;
 class DirectLinkQueryResponse extends AbstractPaymentResponse
 {
 
+    /**
+     * @throws \Exception
+     */
     public function __construct($xml_string)
     {
         libxml_use_internal_errors(true);
 
-        if (simplexml_load_string($xml_string)) {
+        if (simplexml_load_string((string) $xml_string)) {
             $xmlResponse = new SimpleXMLElement($xml_string);
 
             $attributesArray = $this->xmlAttributesToArray($xmlResponse->attributes());
@@ -27,42 +30,36 @@ class DirectLinkQueryResponse extends AbstractPaymentResponse
             // filter request for Ogone parameters
             $this->parameters = $this->filterRequestParameters($attributesArray);
 
-            if ($this->logger) {
-                $this->logger->debug(sprintf('Response %s', get_class($this)), $this->parameters);
-            }
+            $this->logger?->debug(sprintf('Response %s', static::class), $this->parameters);
 
         } else {
             throw new InvalidArgumentException("No valid XML-string given");
         }
     }
 
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return (0 == $this->getParam('NCERROR'));
     }
 
-    protected function filterRequestParameters(array $httpRequest)
+    protected function filterRequestParameters(array $httpRequest): array
     {
         return array_intersect_key(
             $httpRequest,
             array_flip(
                 array_merge(
                     $this->ogoneFields,
-                    array(
-                        'PAYIDSUB',
-                        'NCSTATUS',
-                        'NCERRORPLUS',
-                    )
+                    ['PAYIDSUB', 'NCSTATUS', 'NCERRORPLUS']
                 )
             )
         );
     }
 
-    private function xmlAttributesToArray($attributes)
+    private function xmlAttributesToArray($attributes): array
     {
-        $attributesArray = array();
+        $attributesArray = [];
 
-        if (count($attributes)) {
+        if (is_countable($attributes) ? count($attributes) : 0) {
             foreach ($attributes as $key => $value) {
                 $attributesArray[(string)$key] = (string)$value;
             }

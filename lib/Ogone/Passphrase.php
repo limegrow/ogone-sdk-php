@@ -14,12 +14,12 @@ namespace Ogone;
 /**
  * Ogone Passphrase Value Object
  */
-final class Passphrase
+final class Passphrase implements \Stringable
 {
     /**
      * @var string
      */
-    private $passphrase;
+    private string $passphrase;
 
     /** @@codeCoverageIgnore */
     public function __construct($passphrase)
@@ -33,8 +33,8 @@ final class Passphrase
     /**
      * String representation
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->passphrase;
+        return $this->passphrase;
     }
 }

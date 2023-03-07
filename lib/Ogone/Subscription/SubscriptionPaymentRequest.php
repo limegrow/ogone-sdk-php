@@ -31,11 +31,11 @@ class SubscriptionPaymentRequest extends EcommercePaymentRequest
 
     /**
      * Unique identifier of the subscription. The subscription id must be assigned dynamically.
-     * @author René de Kat <renedekat@9lives-development.com>
-     *
      * @param string $subscriptionId (maxlength 50)
+     *@author René de Kat <renedekat@9lives-development.com>
+     *
      */
-    public function setSubscriptionId($subscriptionId)
+    public function setSubscriptionId(string $subscriptionId)
     {
         if (strlen($subscriptionId) > 50) {
             throw new InvalidArgumentException("Subscription id cannot be longer than 50 characters");
@@ -50,15 +50,11 @@ class SubscriptionPaymentRequest extends EcommercePaymentRequest
      * Amount of the subscription (can be different from the amount of the original transaction)
      * multiplied by 100, since the format of the amount must not contain any decimals or other separators.
      *
-     * @author René de Kat <renedekat@9lives-development.com>
+     *@author René de Kat <renedekat@9lives-development.com>
      *
-     * @param integer $amount
      */
-    public function setSubscriptionAmount($amount)
+    public function setSubscriptionAmount(int $amount)
     {
-        if (!is_int($amount)) {
-            throw new InvalidArgumentException("Integer expected. Amount is always in cents");
-        }
         if ($amount <= 0) {
             throw new InvalidArgumentException("Amount must be a positive number");
         }
@@ -70,11 +66,11 @@ class SubscriptionPaymentRequest extends EcommercePaymentRequest
 
     /**
      * Order description
-     * @author René de Kat <renedekat@9lives-development.com>
-     *
      * @param string $description (maxlength 100)
+     *@author René de Kat <renedekat@9lives-development.com>
+     *
      */
-    public function setSubscriptionDescription($description)
+    public function setSubscriptionDescription(string $description)
     {
         if (strlen($description) > 100) {
             throw new InvalidArgumentException("Subscription description cannot be longer than 100 characters");
@@ -87,11 +83,11 @@ class SubscriptionPaymentRequest extends EcommercePaymentRequest
 
     /**
      * OrderID for subscription payments
-     * @author René de Kat <renedekat@9lives-development.com>
-     *
      * @param string $orderId (maxlength 40)
+     *@author René de Kat <renedekat@9lives-development.com>
+     *
      */
-    public function setSubscriptionOrderId($orderId)
+    public function setSubscriptionOrderId(string $orderId)
     {
         if (strlen($orderId) > 40) {
             throw new InvalidArgumentException("Subscription order id cannot be longer than 40 characters");
@@ -138,13 +134,13 @@ class SubscriptionPaymentRequest extends EcommercePaymentRequest
 
     /**
      * Set subscription status
-     * @author René de Kat <renedekat@9lives-development.com>
-     *
      * @param integer $status   0 = inactive, 1 = active
+     *@author René de Kat <renedekat@9lives-development.com>
+     *
      */
-    public function setSubscriptionStatus($status)
+    public function setSubscriptionStatus(int $status)
     {
-        if (!in_array($status, array(0, 1))) {
+        if (!in_array($status, [0, 1])) {
             throw new InvalidArgumentException("Invalid status specified for subscription. Possible values: 0 = inactive, 1 = active");
         }
         $this->parameters['sub_status'] = $status;
@@ -152,11 +148,10 @@ class SubscriptionPaymentRequest extends EcommercePaymentRequest
 
     /**
      * Set comment for merchant
-     * @author René de Kat <renedekat@9lives-development.com>
+     *@author René de Kat <renedekat@9lives-development.com>
      *
-     * @param string $comment
      */
-    public function setSubscriptionComment($comment)
+    public function setSubscriptionComment(string $comment)
     {
         if (strlen($comment) > 200) {
             throw new InvalidArgumentException("Subscription comment cannot be longer than 200 characters");
@@ -167,12 +162,8 @@ class SubscriptionPaymentRequest extends EcommercePaymentRequest
         $this->parameters['sub_comment'] = $comment;
     }
 
-    public function getRequiredFields()
+    public function getRequiredFields(): array
     {
-        return array(
-            'pspid', 'currency', 'orderid',
-            'subscription_id', 'sub_amount', 'sub_com', 'sub_orderid', 'sub_period_unit',
-            'sub_period_number', 'sub_period_moment','sub_startdate', 'sub_status'
-        );
+        return ['pspid', 'currency', 'orderid', 'subscription_id', 'sub_amount', 'sub_com', 'sub_orderid', 'sub_period_unit', 'sub_period_number', 'sub_period_moment', 'sub_startdate', 'sub_status'];
     }
 }

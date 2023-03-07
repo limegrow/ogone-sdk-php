@@ -4,30 +4,30 @@ namespace Ogone\FlexCheckout;
 
 use InvalidArgumentException;
 
-class Alias
+class Alias implements \Stringable
 {
     /** @var string */
-    private $alias;
+    private string $alias;
 
     public function __construct($alias)
     {
-        if (preg_match('/[^a-zA-Z0-9_-]/', $alias)) {
+        if (preg_match('/[^a-zA-Z0-9_-]/', (string) $alias)) {
             throw new InvalidArgumentException("Alias cannot contain special characters");
         }
         $this->alias = $alias;
     }
 
-    public function getAlias()
+    public function getAlias(): string
     {
         return $this->alias;
     }
 
-    public function setAlias($alias)
+    public function setAlias($alias): void
     {
         $this->alias = $alias;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->alias;
     }

@@ -25,13 +25,9 @@ class DirectLinkQueryRequest extends AbstractDirectLinkRequest
         $this->parameters['payidsub'] = $payidsub;
     }
 
-    public function getRequiredFields()
+    public function getRequiredFields(): array
     {
-        return array(
-            'pspid',
-            'userid',
-            'pswd',
-        );
+        return ['pspid', 'userid', 'pswd'];
     }
 
     public function validate()

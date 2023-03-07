@@ -13,12 +13,9 @@ namespace Ogone\ParameterFilter;
 
 class AliasShaInParameterFilter implements ParameterFilter
 {
-    private $allowed = array(
-        'ACCEPTURL', 'ALIAS', 'ALIASPERSISTEDAFTERUSE', 'BRAND', 'EXCEPTIONURL',
-        'LANGUAGE', 'ORDERID', 'PARAMPLUS', 'PSPID'
-    );
+    private array $allowed = ['ACCEPTURL', 'ALIAS', 'ALIASPERSISTEDAFTERUSE', 'BRAND', 'EXCEPTIONURL', 'LANGUAGE', 'ORDERID', 'PARAMPLUS', 'PSPID'];
 
-    public function filter(array $parameters)
+    public function filter(array $parameters): array
     {
         $parameters = array_change_key_case($parameters, CASE_UPPER);
         return array_intersect_key($parameters, array_flip($this->allowed));
