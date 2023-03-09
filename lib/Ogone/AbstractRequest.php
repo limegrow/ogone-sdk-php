@@ -815,7 +815,7 @@ abstract class AbstractRequest implements Request
     {
         $this->validate();
 
-        $params = array_filter($this->parameters, 'strlen');
+        $params = array_filter($this->parameters, fn($value) => !empty($value));
         $params = array_change_key_case($params, CASE_UPPER);
 
         foreach ($params as $key => $value) {
