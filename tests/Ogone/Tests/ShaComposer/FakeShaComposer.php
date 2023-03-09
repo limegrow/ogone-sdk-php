@@ -20,7 +20,7 @@ class FakeShaComposer implements ShaComposer
 {
     const FAKESHASTRING = 'foo';
 
-    public function compose(array $parameters, bool $useLatinCharset = false): string
+    public function compose(array $responseParameters, $useLatinCharset = false)
     {
         return self::FAKESHASTRING;
     }

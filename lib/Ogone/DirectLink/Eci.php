@@ -38,11 +38,12 @@ class Eci implements \Stringable
     /** The customer's first transaction was an e-Commerce transaction, i.e. the customer entered his financial details himself on a secure website (either the merchant's website or our secure platform). The merchant either stored the details himself or had these details stored in our system using an Alias and is now performing another transaction for the same customer (recurring transaction), using the Alias details. */
     const ECOMMERCE_RECURRING = 9;
 
-    /**
-     * @param int $eciCode
-     */
-    public function __construct(protected $code)
+    /** @var int */
+    protected $code;
+
+    public function __construct($eciCode)
     {
+        $this->code = $eciCode;
     }
 
     public function __toString(): string

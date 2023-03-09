@@ -51,7 +51,7 @@ class AllParametersShaComposerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedSha, $composer->compose($request));
     }
 
-    public function provideSha1Request(): array
+    public function provideSha1Request()
     {
         $passphrase = new Passphrase('Mysecretsig1875!?');
 
@@ -63,10 +63,13 @@ class AllParametersShaComposerTest extends \PHPUnit_Framework_TestCase
 
 
 
-        return [[$passphrase, $request1, $expectedSha1], [$passphrase, $request2, $expectedSha2]];
+        return array(
+            array($passphrase, $request1, $expectedSha1),
+            array($passphrase, $request2, $expectedSha2),
+        );
     }
 
-    public function provideSha256Request(): array
+    public function provideSha256Request()
     {
         $passphrase = new Passphrase('Mysecretsig1875!?');
 
@@ -76,10 +79,13 @@ class AllParametersShaComposerTest extends \PHPUnit_Framework_TestCase
         $expectedSha2 = 'A06D4534724885350BA5350731B02F4083370F8C9EED59D1F1C5E2B78EC3C257';
         $request2 = $this->createExtensiveParameterSet();
 
-        return [[$passphrase, $request1, $expectedSha1], [$passphrase, $request2, $expectedSha2]];
+        return array(
+            array($passphrase, $request1, $expectedSha1),
+            array($passphrase, $request2, $expectedSha2),
+        );
     }
 
-    public function provideSha512Request(): array
+    public function provideSha512Request()
     {
         $passphrase = new Passphrase('Mysecretsig1875!?');
 
@@ -89,16 +95,48 @@ class AllParametersShaComposerTest extends \PHPUnit_Framework_TestCase
         $expectedSha2 = '31B74E4E0C7BCE4DED9DEAA97D4D3FB419EF6E2FDBD98C18D340B276A9F751E747972A0469A74B73E4C41F38F0F3F58BAD8D7107CA54DF936569852887EB6BE4';
         $request2 = $this->createExtensiveParameterSet();
 
-        return [[$passphrase, $request1, $expectedSha1], [$passphrase, $request2, $expectedSha2]];
+        return array(
+            array($passphrase, $request1, $expectedSha1),
+            array($passphrase, $request2, $expectedSha2),
+        );
     }
 
-    protected function createMinimalParameterSet(): array
+    protected function createMinimalParameterSet()
     {
-        return ['currency' => 'EUR', 'ACCEPTANCE' => 1234, 'amount' => 15, 'BRAND' => 'VISA', 'CARDNO' => 'xxxxxxxxxxxx1111', 'NCERROR' => 0, 'PAYID' => 32_100_123, 'PM' => 'CreditCard', 'STATUS' => 9, 'orderID' => 12, 'unknownparam' => 'some value'];
+        return array(
+            'currency' => 'EUR',
+            'ACCEPTANCE' => 1234,
+            'amount' => 15,
+            'BRAND' => 'VISA',
+            'CARDNO' => 'xxxxxxxxxxxx1111',
+            'NCERROR' => 0,
+            'PAYID' => 32_100_123,
+            'PM' => 'CreditCard',
+            'STATUS' => 9,
+            'orderID' => 12,
+            'unknownparam' => 'some value',
+        );
     }
 
-    protected function createExtensiveParameterSet(): array
+    protected function createExtensiveParameterSet()
     {
-        return ['orderID' => 'myorderid1678834094', 'currency' => 'EUR', 'amount' => '99', 'PM' => 'CreditCard', 'ACCEPTANCE' => 'test123', 'STATUS' => '9', 'CARDNO' => 'XXXXXXXXXXXX1111', 'ED' => '0312', 'CN' => 'Some Name', 'TRXDATE' => '01/10/11', 'PAYID' => '9126297', 'NCERROR' => '0', 'BRAND' => 'VISA', 'COMPLUS' => 'my feedbackmessage', 'IP' => '12.123.12.123', 'foo' => 'bar'];
+        return array (
+            'orderID' => 'myorderid1678834094',
+            'currency' => 'EUR',
+            'amount' => '99',
+            'PM' => 'CreditCard',
+            'ACCEPTANCE' => 'test123',
+            'STATUS' => '9',
+            'CARDNO' => 'XXXXXXXXXXXX1111',
+            'ED' => '0312',
+            'CN' => 'Some Name',
+            'TRXDATE' => '01/10/11',
+            'PAYID' => '9126297',
+            'NCERROR' => '0',
+            'BRAND' => 'VISA',
+            'COMPLUS' => 'my feedbackmessage',
+            'IP' => '12.123.12.123',
+            'foo' => 'bar',
+        );
     }
 }

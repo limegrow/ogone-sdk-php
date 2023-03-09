@@ -21,9 +21,10 @@ abstract class AbstractPaymentRequest extends AbstractRequest
     /**
      * Set Mode
      *
+     * @param string $mode
      * @return $this
      */
-    public function setMode(string $mode): static
+    public function setMode($mode)
     {
         if ($mode === self::MODE_TEST) {
             return $this->setOgoneUri(self::TEST);
@@ -39,7 +40,7 @@ abstract class AbstractPaymentRequest extends AbstractRequest
      *
      * @return $this
      */
-    public function setTestMode(): static
+    public function setTestMode()
     {
         return $this->setMode(self::MODE_TEST);
     }
@@ -49,12 +50,12 @@ abstract class AbstractPaymentRequest extends AbstractRequest
      *
      * @return $this
      */
-    public function setProductionMode(): static
+    public function setProductionMode()
     {
         return $this->setMode(self::MODE_PRODUCTION);
     }
 
-    public function setOrderid($orderid): AbstractPaymentRequest|static
+    public function setOrderid($orderid)
     {
         if (mb_strlen((string) $orderid, 'UTF-8') > 40) {
             throw new InvalidArgumentException("Orderid cannot be longer than 40 characters");
@@ -68,14 +69,14 @@ abstract class AbstractPaymentRequest extends AbstractRequest
     }
 
     /** Friend alias for setCom() */
-    public function setOrderDescription(string $orderDescription): AbstractPaymentRequest|static
+    public function setOrderDescription($orderDescription)
     {
         return $this->setCom($orderDescription);
     }
 
-    public function setCom(string $com): AbstractPaymentRequest|static
+    public function setCom($com)
     {
-        if (mb_strlen($com, 'UTF-8') > 100) {
+        if (mb_strlen((string) $com, 'UTF-8') > 100) {
             throw new InvalidArgumentException("Order description cannot be longer than 100 characters");
         }
         $this->parameters['com'] = $com;
@@ -86,10 +87,15 @@ abstract class AbstractPaymentRequest extends AbstractRequest
     /**
      * Set amount in cents, eg EUR 12.34 is written as 1234
      *
+     * @param $amount
      * @return $this
      */
-    public function setAmount(int $amount): static
+    public function setAmount($amount)
     {
+        if (!is_int($amount)) {
+            throw new InvalidArgumentException("Integer expected. Amount is always in cents");
+        }
+
         if ($amount >= 1.0E+15) {
             throw new InvalidArgumentException("Amount is too high");
         }
@@ -99,16 +105,16 @@ abstract class AbstractPaymentRequest extends AbstractRequest
         return $this;
     }
 
-    public function setCurrency(string $currency): AbstractPaymentRequest|static
+    public function setCurrency($currency)
     {
         $this->parameters['currency'] = $currency;
 
         return $this;
     }
 
-    public function setEmail(string $email): AbstractPaymentRequest|static
+    public function setEmail($email)
     {
-        if (mb_strlen($email, 'UTF-8') > 50) {
+        if (mb_strlen((string) $email, 'UTF-8') > 50) {
             throw new InvalidArgumentException("Email is too long");
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -119,9 +125,9 @@ abstract class AbstractPaymentRequest extends AbstractRequest
         return $this;
     }
 
-    public function setOwnerAddress(string $owneraddress): AbstractPaymentRequest|static
+    public function setOwnerAddress($owneraddress)
     {
-        if (mb_strlen($owneraddress, 'UTF-8') > 35) {
+        if (mb_strlen((string) $owneraddress, 'UTF-8') > 35) {
             throw new InvalidArgumentException("Owner address is too long");
         }
         $this->parameters['owneraddress'] = $owneraddress;
@@ -129,9 +135,9 @@ abstract class AbstractPaymentRequest extends AbstractRequest
         return $this;
     }
 
-    public function setOwnerZip(string $ownerzip): AbstractPaymentRequest|static
+    public function setOwnerZip($ownerzip)
     {
-        if (mb_strlen($ownerzip, 'UTF-8') > 10) {
+        if (mb_strlen((string) $ownerzip, 'UTF-8') > 10) {
             throw new InvalidArgumentException("Owner Zip is too long");
         }
         $this->parameters['ownerzip'] = $ownerzip;
@@ -139,9 +145,9 @@ abstract class AbstractPaymentRequest extends AbstractRequest
         return $this;
     }
 
-    public function setOwnerTown(string $ownertown): AbstractPaymentRequest|static
+    public function setOwnerTown($ownertown)
     {
-        if (mb_strlen($ownertown, 'UTF-8') > 40) {
+        if (mb_strlen((string) $ownertown, 'UTF-8') > 40) {
             throw new InvalidArgumentException("Owner town is too long");
         }
         $this->parameters['ownertown'] = $ownertown;
@@ -154,7 +160,7 @@ abstract class AbstractPaymentRequest extends AbstractRequest
      *
      * @see http://www.iso.org/iso/country_codes/iso_3166_code_lists/english_country_names_and_code_elements.htm
      */
-    public function setOwnerCountry(string $ownercountry): AbstractPaymentRequest|static
+    public function setOwnerCountry($ownercountry)
     {
         return $this->setOwnercty($ownercountry);
     }
@@ -162,29 +168,29 @@ abstract class AbstractPaymentRequest extends AbstractRequest
     /**
      * @see http://www.iso.org/iso/country_codes/iso_3166_code_lists/english_country_names_and_code_elements.htm
      */
-    public function setOwnercty(string $ownercty): AbstractPaymentRequest|static
+    public function setOwnercty($ownercty)
     {
-        if (mb_strlen($ownercty, 'UTF-8') > 2) {
+        if (mb_strlen((string) $ownercty, 'UTF-8') > 2) {
             throw new InvalidArgumentException("Owner country code is too long");
         }
 
-        if (!preg_match('/^[A-Z]{2}$/', strtoupper($ownercty))) {
+        if (!preg_match('/^[A-Z]{2}$/', strtoupper((string) $ownercty))) {
             throw new InvalidArgumentException("Illegal country code");
         }
-        $this->parameters['ownercty'] = strtoupper($ownercty);
+        $this->parameters['ownercty'] = strtoupper((string) $ownercty);
 
         return $this;
     }
 
     /** Alias for setOwnertelno() */
-    public function setOwnerPhone(string $ownerphone): AbstractPaymentRequest|static
+    public function setOwnerPhone($ownerphone)
     {
         return $this->setOwnertelno($ownerphone);
     }
 
-    public function setOwnertelno(string $ownertelno): AbstractPaymentRequest|static
+    public function setOwnertelno($ownertelno)
     {
-        if (mb_strlen($ownertelno, 'UTF-8') > 30) {
+        if (mb_strlen((string) $ownertelno, 'UTF-8') > 30) {
             throw new InvalidArgumentException("Owner phone is too long");
         }
         $this->parameters['ownertelno'] = $ownertelno;
@@ -193,40 +199,40 @@ abstract class AbstractPaymentRequest extends AbstractRequest
     }
 
     /** Alias for setComplus() */
-    public function setFeedbackMessage(string $feedbackMessage): AbstractPaymentRequest|static
+    public function setFeedbackMessage($feedbackMessage)
     {
         return $this->setComplus($feedbackMessage);
     }
 
-    public function setComplus(string $complus): AbstractPaymentRequest|static
+    public function setComplus($complus)
     {
         $this->parameters['complus'] = $complus;
 
         return $this;
     }
 
-    public function setBrand(string $brand): static
+    public function setBrand($brand)
     {
         $this->parameters['brand'] = $brand;
 
         return $this;
     }
 
-    public function setPaymentMethod(string $paymentMethod): static
+    public function setPaymentMethod($paymentMethod)
     {
         return $this->setPm($paymentMethod);
     }
 
-    public function setPm(string $pm): static
+    public function setPm($pm)
     {
         $this->parameters['pm'] = $pm;
 
         return $this;
     }
 
-    public function setParamvar(string $paramvar): static
+    public function setParamvar($paramvar)
     {
-        if (mb_strlen($paramvar, 'UTF-8') < 2 || mb_strlen($paramvar, 'UTF-8') > 50) {
+        if (mb_strlen((string) $paramvar, 'UTF-8') < 2 || mb_strlen((string) $paramvar, 'UTF-8') > 50) {
             throw new InvalidArgumentException("Paramvar must be between 2 and 50 characters in length");
         }
         $this->parameters['paramvar'] = $paramvar;
@@ -235,26 +241,26 @@ abstract class AbstractPaymentRequest extends AbstractRequest
     }
 
     /** Alias for setTp */
-    public function setDynamicTemplateUri(string $uri)
+    public function setDynamicTemplateUri($uri)
     {
         $this->validateUri($uri);
         $this->setTp($uri);
     }
 
     /** Alias for setTp */
-    public function setStaticTemplate(string $tp): AbstractPaymentRequest|static
+    public function setStaticTemplate($tp)
     {
         return $this->setTp($tp);
     }
 
-    public function setTp(string $tp): AbstractPaymentRequest|static
+    public function setTp($tp)
     {
         $this->parameters['tp'] = $tp;
 
         return $this;
     }
 
-    public function setOperation(?PaymentOperation $operation): static
+    public function setOperation(?PaymentOperation $operation)
     {
         $this->parameters['operation'] = (string) $operation;
 

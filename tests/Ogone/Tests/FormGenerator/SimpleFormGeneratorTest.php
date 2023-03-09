@@ -43,7 +43,7 @@ class SimpleFormGeneratorTest extends TestCase
         $formGenerator = new SimpleFormGenerator();
 
         $this->assertXmlStringEqualsXmlString($expected, $formGenerator->render($paymentRequest));
-        $this->assertXmlStringEqualsXmlString($expected, $formGenerator->render($paymentRequest));
+        $this->assertXmlStringEqualsXmlString($expected, $formGenerator->render($paymentRequest, 'ogone', true));
     }
 
     /** @test */
@@ -101,6 +101,6 @@ class SimpleFormGeneratorTest extends TestCase
         $formGenerator = new SimpleFormGenerator();
 
         $this->assertXmlStringEqualsXmlString($expected, $formGenerator->render($paymentRequest));
-        $this->assertXmlStringEqualsXmlString($expected, $formGenerator->render($paymentRequest));
+        $this->assertXmlStringEqualsXmlString($expected, $formGenerator->render($paymentRequest, 'ogone', true));
 	}
 }

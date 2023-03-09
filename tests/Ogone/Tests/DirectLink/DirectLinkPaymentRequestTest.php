@@ -103,12 +103,16 @@ class DirectLinkPaymentRequestTest extends \PHPUnit_Framework_TestCase
         $directLinkPaymentRequest->$method($value);
     }
 
-    public function provideBadParameters(): array
+    public function provideBadParameters()
     {
-        return [['setPswd', '12'], ['setUserid', '1']];
+        return array(
+            array('setPswd', '12'),
+            array('setUserid', '1'),
+        );
     }
 
-    private function provideMinimalDirectLinkPaymentRequest(): DirectLinkPaymentRequest
+    /** @return DirectLinkPaymentRequest */
+    private function provideMinimalDirectLinkPaymentRequest()
     {
         $directLinkRequest = new DirectLinkPaymentRequest(new FakeShaComposer());
         $directLinkRequest->setPspid('123456');

@@ -9,9 +9,9 @@ class PaymentOperation implements \Stringable
     const REFUND = 'RFD';
     const REQUEST_FOR_PRE_AUTHORISATION = 'PAU';
 
-    protected string $operation;
+    protected $operation;
 
-    public function __construct(string $operation)
+    public function __construct($operation)
     {
         if(!in_array($operation, self::getAllAvailableOperations())) {
             throw new \InvalidArgumentException('Unknown Operation: ' . $operation);
@@ -20,18 +20,23 @@ class PaymentOperation implements \Stringable
         $this->operation = $operation;
     }
 
-    public function equals(PaymentOperation $other): bool
+    public function equals(PaymentOperation $other)
     {
         return $this->operation === $other->operation;
     }
 
     public function __toString(): string
     {
-        return $this->operation;
+        return (string) $this->operation;
     }
 
-    public function getAllAvailableOperations(): array
+    public function getAllAvailableOperations()
     {
-        return [self::REQUEST_FOR_AUTHORISATION, self::REQUEST_FOR_DIRECT_SALE, self::REFUND, self::REQUEST_FOR_PRE_AUTHORISATION];
+        return array(
+            self::REQUEST_FOR_AUTHORISATION,
+            self::REQUEST_FOR_DIRECT_SALE,
+            self::REFUND,
+            self::REQUEST_FOR_PRE_AUTHORISATION
+        );
     }
 } 

@@ -21,9 +21,14 @@ class DirectLinkMaintenanceRequest extends AbstractDirectLinkRequest
         $this->ogoneUri = self::TEST;
     }
 
-    public function getRequiredFields(): array
+    public function getRequiredFields()
     {
-        return ['pspid', 'userid', 'pswd', 'operation'];
+        return array(
+            'pspid',
+            'userid',
+            'pswd',
+            'operation',
+        );
     }
 
     public function setAmount($amount)
@@ -44,6 +49,8 @@ class DirectLinkMaintenanceRequest extends AbstractDirectLinkRequest
      * Set Items.
      * Items array should contain item with keys like:
      * ['itemid', 'itemname', 'itemprice', 'itemquant', 'itemvatcode', 'taxincluded']
+     *
+     * @param array $items
      */
     public function setItems(array $items) {
         foreach ($items as $i => $item) {

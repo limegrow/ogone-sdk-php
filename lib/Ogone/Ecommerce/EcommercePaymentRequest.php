@@ -26,12 +26,14 @@ class EcommercePaymentRequest extends AbstractPaymentRequest
         $this->ogoneUri = self::TEST;
     }
 
-    public function getRequiredFields(): array
+    public function getRequiredFields()
     {
-        return ['pspid', 'currency', 'amount', 'orderid'];
+        return array(
+            'pspid', 'currency', 'amount', 'orderid'
+        );
     }
 
-    public function setAlias(Alias $alias): static
+    public function setAlias(Alias $alias)
     {
         $this->parameters['aliasOperation'] = $alias->getAliasOperation();
         $this->parameters['aliasusage'] = $alias->getAliasUsage();
@@ -45,13 +47,17 @@ class EcommercePaymentRequest extends AbstractPaymentRequest
      * @override AbstractRequest::getShaSign()
      * @return string
      */
-    public function getShaSign(): string
+    public function getShaSign()
     {
         return $this->shaComposer->compose($this->toArray());
     }
 
-    protected function getValidOperations(): array
+    protected function getValidOperations()
     {
-        return [PaymentOperation::REQUEST_FOR_AUTHORISATION, PaymentOperation::REQUEST_FOR_DIRECT_SALE, PaymentOperation::REQUEST_FOR_PRE_AUTHORISATION];
+        return array(
+            PaymentOperation::REQUEST_FOR_AUTHORISATION,
+            PaymentOperation::REQUEST_FOR_DIRECT_SALE,
+            PaymentOperation::REQUEST_FOR_PRE_AUTHORISATION,
+        );
     }
 }

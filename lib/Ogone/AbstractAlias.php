@@ -8,20 +8,22 @@ abstract class AbstractAlias implements \Stringable
     const OPERATION_BY_PSP = 'BYPSP';
 
     /** @var string */
-    protected string $aliasOperation;
+    protected $aliasOperation;
 
     /** @var string */
-    protected string $aliasUsage;
+    protected $aliasUsage;
 
     /** @var string */
-    protected string $alias;
+    protected $alias;
 
     /**
      * Set Alias Name
      *
+     * @param string $alias
+     *
      * @return $this
      */
-    public function setAlias(string $alias): static
+    public function setAlias($alias)
     {
         $this->alias = $alias;
 
@@ -33,7 +35,7 @@ abstract class AbstractAlias implements \Stringable
      *
      * @return string
      */
-    public function getAlias(): string
+    public function getAlias()
     {
         return $this->alias;
     }
@@ -41,9 +43,11 @@ abstract class AbstractAlias implements \Stringable
     /**
      * Set Alias Usage
      *
+     * @param $aliasUsage
+     *
      * @return $this
      */
-    public function setAliasUsage(string $aliasUsage): static
+    public function setAliasUsage($aliasUsage)
     {
         $this->aliasUsage = $aliasUsage;
 
@@ -55,7 +59,7 @@ abstract class AbstractAlias implements \Stringable
      *
      * @return string
      */
-    public function getAliasUsage(): string
+    public function getAliasUsage()
     {
         return $this->aliasUsage;
     }
@@ -63,9 +67,11 @@ abstract class AbstractAlias implements \Stringable
     /**
      * Set Alias Operation
      *
+     * @param string $aliasOperation
+     *
      * @return $this
      */
-    public function setAliasOperation(string $aliasOperation): static
+    public function setAliasOperation($aliasOperation)
     {
         $this->aliasOperation = $aliasOperation;
 
@@ -77,7 +83,7 @@ abstract class AbstractAlias implements \Stringable
      *
      * @return string
      */
-    public function getAliasOperation(): string
+    public function getAliasOperation()
     {
         return $this->aliasOperation;
     }
@@ -87,7 +93,7 @@ abstract class AbstractAlias implements \Stringable
      *
      * @return $this
      */
-    public function operationByMerchant(): static
+    public function operationByMerchant()
     {
         return $this->setAliasOperation(self::OPERATION_BY_MERCHANT);
     }
@@ -97,14 +103,14 @@ abstract class AbstractAlias implements \Stringable
      *
      * @return $this
      */
-    public function operationByPsp(): static
+    public function operationByPsp()
     {
         return $this->setAliasOperation(self::OPERATION_BY_PSP);
     }
 
     /**
      * To String
-     *
+     * ы
      * @return string
      */
     public function __toString(): string

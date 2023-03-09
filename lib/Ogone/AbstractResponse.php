@@ -20,20 +20,88 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      *
      * @var array
      */
-    protected array $ogoneFields = ['AAVADDRESS', 'AAVCHECK', 'AAVMAIL', 'AAVNAME', 'AAVPHONE', 'AAVZIP', 'ACCEPTANCE', 'ALIAS', 'AMOUNT', 'BIC', 'BIN', 'BRAND', 'CARDNO', 'CCCTY', 'CH_AUTHENTICATION_INFO', 'CN', 'COLLECTOR_BIC', 'COLLECTOR_IBAN', 'COMPLUS', 'CREATION_STATUS', 'CREDITDEBIT', 'CURRENCY', 'CVCCHECK', 'DCC_COMMPERCENTAGE', 'DCC_CONVAMOUNT', 'DCC_CONVCCY', 'DCC_EXCHRATE', 'DCC_EXCHRATESOURCE', 'DCC_EXCHRATETS', 'DCC_INDICATOR', 'DCC_MARGINPERCENTAGE', 'DCC_VALIDHOURS', 'DEVICEID', 'DIGESTCARDNO', 'ECI', 'ED', 'EMAIL', 'ENCCARDNO', 'FXAMOUNT', 'FXCURRENCY', 'HTML_ANSWER', 'IP', 'IPCTY', 'MANDATEID', 'MOBILEMODE', 'NBREMAILUSAGE', 'NBRIPUSAGE', 'NBRIPUSAGE_ALLTX', 'NBRUSAGE', 'NCSTATUS', 'NCERROR', 'NCERRORPLUS', 'ORDERID', 'PAYID', 'PAYIDSUB', 'PAYMENT_REFERENCE', 'PM', 'SCO_CATEGORY', 'SCORING', 'SEQUENCETYPE', 'SIGNDATE', 'STATUS', 'SUBBRAND', 'SUBSCRIPTION_ID', 'TICKET', 'TRXDATE', 'VC'];
+    protected $ogoneFields = array(
+        'AAVADDRESS',
+        'AAVCHECK',
+        'AAVMAIL',
+        'AAVNAME',
+        'AAVPHONE',
+        'AAVZIP',
+        'ACCEPTANCE',
+        'ALIAS',
+        'AMOUNT',
+        'BIC',
+        'BIN',
+        'BRAND',
+        'CARDNO',
+        'CCCTY',
+        'CH_AUTHENTICATION_INFO',
+        'CN',
+        'COLLECTOR_BIC',
+        'COLLECTOR_IBAN',
+        'COMPLUS',
+        'CREATION_STATUS',
+        'CREDITDEBIT',
+        'CURRENCY',
+        'CVCCHECK',
+        'DCC_COMMPERCENTAGE',
+        'DCC_CONVAMOUNT',
+        'DCC_CONVCCY',
+        'DCC_EXCHRATE',
+        'DCC_EXCHRATESOURCE',
+        'DCC_EXCHRATETS',
+        'DCC_INDICATOR',
+        'DCC_MARGINPERCENTAGE',
+        'DCC_VALIDHOURS',
+        'DEVICEID',
+        'DIGESTCARDNO',
+        'ECI',
+        'ED',
+        'EMAIL',
+        'ENCCARDNO',
+        'FXAMOUNT',
+        'FXCURRENCY',
+        'HTML_ANSWER',
+        'IP',
+        'IPCTY',
+        'MANDATEID',
+        'MOBILEMODE',
+        'NBREMAILUSAGE',
+        'NBRIPUSAGE',
+        'NBRIPUSAGE_ALLTX',
+        'NBRUSAGE',
+        'NCSTATUS',
+        'NCERROR',
+        'NCERRORPLUS',
+        'ORDERID',
+        'PAYID',
+        'PAYIDSUB',
+        'PAYMENT_REFERENCE',
+        'PM',
+        'SCO_CATEGORY',
+        'SCORING',
+        'SEQUENCETYPE',
+        'SIGNDATE',
+        'STATUS',
+        'SUBBRAND',
+        'SUBSCRIPTION_ID',
+        'TICKET',
+        'TRXDATE',
+        'VC',
+    );
 
     /**
      * @var array
      */
-    protected array $parameters;
+    protected $parameters;
 
     /**
      * @var string
      */
-    protected mixed $shaSign;
+    protected $shaSign;
 
     /** @var LoggerInterface|null */
-    protected ?LoggerInterface $logger = null;
+    protected $logger;
 
     /**
      * @param array $httpRequest Typically $_REQUEST
@@ -51,7 +119,9 @@ abstract class AbstractResponse implements Response, \ArrayAccess
         // filter request for Ogone parameters
         $this->parameters = $this->filterRequestParameters($httpRequest);
 
-        $this->logger?->debug(sprintf('Response %s', static::class), $this->parameters);
+        if ($this->logger) {
+            $this->logger->debug(sprintf('Response %s', $this::class), $this->parameters);
+        }
     }
 
     /**
@@ -61,7 +131,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      *
      * @return $this
      */
-    public function setLogger(LoggerInterface $logger = null): static
+    public function setLogger(LoggerInterface $logger = null)
     {
         $this->logger = $logger;
 
@@ -71,9 +141,11 @@ abstract class AbstractResponse implements Response, \ArrayAccess
     /**
      * Filter http request parameters.
      *
+     * @param array $requestParameters
      *
+     * @return array
      */
-    protected function filterRequestParameters(array $requestParameters): array
+    protected function filterRequestParameters(array $requestParameters)
     {
         // filter request for Ogone parameters
         return array_intersect_key($requestParameters, array_flip($this->ogoneFields));
@@ -82,11 +154,13 @@ abstract class AbstractResponse implements Response, \ArrayAccess
     /**
      * Set Ogone SHA sign.
      *
+     * @param array $parameters
      *
      * @throws \InvalidArgumentException
      *
+     * @return mixed
      */
-    protected function extractShaSign(array $parameters): mixed
+    protected function extractShaSign(array $parameters)
     {
         if (!array_key_exists(self::SHASIGN_FIELD, $parameters) || '' == $parameters[self::SHASIGN_FIELD]) {
             throw new InvalidArgumentException('SHASIGN parameter not present in parameters.');
@@ -102,7 +176,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      *
      * @return bool
      */
-    public function hasParam($key): bool
+    public function hasParam($key)
     {
         return array_key_exists($key, $this->parameters);
     }
@@ -112,16 +186,16 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      *
      * @param string $key
      *
-     * @return string
      * @throws \InvalidArgumentException
+     * @return string
      */
-    public function getParam(string $key): string
+    public function getParam($key)
     {
         // always use uppercase
         $key = strtoupper($key);
 
         if (!$this->hasParam($key)) {
-            throw new InvalidArgumentException('Parameter ' . $key . ' does not exist.');
+            throw new InvalidArgumentException('Parameter '.$key.' does not exist.');
         }
 
         return $this->parameters[$key];
@@ -142,21 +216,28 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * Get all parameters + SHASIGN
      * @return array
      */
-    public function toArray(): array
+    public function toArray()
     {
-        return $this->parameters + ['SHASIGN' => $this->shaSign];
+        return $this->parameters + array('SHASIGN' => $this->shaSign);
     }
 
     /**
      * Implementation of \ArrayAccess::offsetSet()
      *
+     * @param string $offset
+     * @param mixed $value
+     * @return void
      * @link http://www.php.net/manual/en/arrayaccess.offsetset.php
      */
-    public function offsetSet(mixed $offset, mixed $value):void
+    #[\ReturnTypeWillChange]
+    public function offsetSet($offset, $value)
     {
-        $offset = strtoupper((string) $offset);
-
-        $this->parameters[$offset] = $value;
+        $offset = strtoupper($offset);
+        if (is_null($offset)) {
+            $this->parameters[] = $value;
+        } else {
+            $this->parameters[$offset] = $value;
+        }
     }
 
     /**
@@ -166,7 +247,8 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @return bool
      * @link http://www.php.net/manual/en/arrayaccess.offsetexists.php
      */
-    public function offsetExists($offset): bool
+    #[\ReturnTypeWillChange]
+    public function offsetExists($offset)
     {
         $offset = strtoupper($offset);
         return isset($this->parameters[$offset]);
@@ -179,7 +261,8 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @return void
      * @link http://www.php.net/manual/en/arrayaccess.offsetunset.php
      */
-    public function offsetUnset($offset): void
+    #[\ReturnTypeWillChange]
+    public function offsetUnset($offset)
     {
         $offset = strtoupper($offset);
         unset($this->parameters[$offset]);
@@ -192,7 +275,8 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @return mixed
      * @link http://www.php.net/manual/en/arrayaccess.offsetget.php
      */
-    public function offsetGet($offset): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         $offset = strtoupper($offset);
         return $this->parameters[$offset] ?? null;
@@ -223,6 +307,6 @@ abstract class AbstractResponse implements Response, \ArrayAccess
                 return isset($this->parameters[$key]);
         }
 
-        throw new \Exception(sprintf('Invalid method %s::%s', static::class, $method));
+        throw new \Exception(sprintf('Invalid method %s::%s', $this::class, $method));
     }
 }

@@ -12,9 +12,6 @@ use InvalidArgumentException;
 class DirectLinkQueryResponse extends AbstractPaymentResponse
 {
 
-    /**
-     * @throws \Exception
-     */
     public function __construct($xml_string)
     {
         libxml_use_internal_errors(true);
@@ -30,34 +27,40 @@ class DirectLinkQueryResponse extends AbstractPaymentResponse
             // filter request for Ogone parameters
             $this->parameters = $this->filterRequestParameters($attributesArray);
 
-            $this->logger?->debug(sprintf('Response %s', static::class), $this->parameters);
+            if ($this->logger) {
+                $this->logger->debug(sprintf('Response %s', $this::class), $this->parameters);
+            }
 
         } else {
             throw new InvalidArgumentException("No valid XML-string given");
         }
     }
 
-    public function isSuccessful(): bool
+    public function isSuccessful()
     {
         return (0 == $this->getParam('NCERROR'));
     }
 
-    protected function filterRequestParameters(array $httpRequest): array
+    protected function filterRequestParameters(array $httpRequest)
     {
         return array_intersect_key(
             $httpRequest,
             array_flip(
                 array_merge(
                     $this->ogoneFields,
-                    ['PAYIDSUB', 'NCSTATUS', 'NCERRORPLUS']
+                    array(
+                        'PAYIDSUB',
+                        'NCSTATUS',
+                        'NCERRORPLUS',
+                    )
                 )
             )
         );
     }
 
-    private function xmlAttributesToArray($attributes): array
+    private function xmlAttributesToArray($attributes)
     {
-        $attributesArray = [];
+        $attributesArray = array();
 
         if (is_countable($attributes) ? count($attributes) : 0) {
             foreach ($attributes as $key => $value) {

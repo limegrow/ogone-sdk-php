@@ -71,12 +71,18 @@ class DirectLinkMaintenanceRequestTest extends \PHPUnit_Framework_TestCase
         $directLinkMaintenanceRequest->$method($value);
     }
 
-    public function provideBadParameters(): array
+    public function provideBadParameters()
     {
-        return [['setPassword', '12'], ['setUserid', '1'], ['setAmount', '232'], ['setAmount', 2.32]];
+        return array(
+            array('setPassword', '12'),
+            array('setUserid', '1'),
+            array('setAmount', '232'),
+            array('setAmount', 2.32),
+        );
     }
 
-    private function provideMinimalDirectLinkMaintenanceRequest(): DirectLinkMaintenanceRequest
+    /** @return DirectLinkMaintenanceRequest */
+    private function provideMinimalDirectLinkMaintenanceRequest()
     {
         $directLinkRequest = new DirectLinkMaintenanceRequest(new FakeShaComposer());
         $directLinkRequest->setPspid('123456');

@@ -9,7 +9,7 @@ class HashAlgorithm implements \Stringable
     const HASH_SHA512 = 'sha512';
 
     /** @var string */
-    private string $algorithm;
+    private $algorithm;
 
     /**
      * @param $algorithm
@@ -17,7 +17,7 @@ class HashAlgorithm implements \Stringable
      */
     public function __construct($algorithm)
     {
-        if (!in_array($algorithm, [self::HASH_SHA1, self::HASH_SHA256, self::HASH_SHA512])) {
+        if (!in_array($algorithm, array(self::HASH_SHA1, self::HASH_SHA256, self::HASH_SHA512))) {
             throw new \InvalidArgumentException(
                 $algorithm . ' is not supported, only sha1, sha256 and sha512 are allowed.'
             );
@@ -28,6 +28,6 @@ class HashAlgorithm implements \Stringable
 
     public function __toString(): string
     {
-        return $this->algorithm;
+        return (string) $this->algorithm;
     }
 }
