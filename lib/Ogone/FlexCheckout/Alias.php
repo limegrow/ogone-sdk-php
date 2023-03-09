@@ -7,7 +7,7 @@ use InvalidArgumentException;
 class Alias implements \Stringable
 {
     /** @var string */
-    private string $alias;
+    private $alias;
 
     public function __construct($alias)
     {
@@ -17,12 +17,12 @@ class Alias implements \Stringable
         $this->alias = $alias;
     }
 
-    public function getAlias(): string
+    public function getAlias()
     {
         return $this->alias;
     }
 
-    public function setAlias($alias): void
+    public function setAlias($alias)
     {
         $this->alias = $alias;
     }

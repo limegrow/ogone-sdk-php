@@ -18,8 +18,10 @@ class EcommercePaymentResponse extends AbstractPaymentResponse
 
     /**
      * Checks if the response is valid
+     * @param ShaComposer $shaComposer
+     * @return bool
      */
-    public function isValid(ShaComposer $shaComposer): bool
+    public function isValid(ShaComposer $shaComposer)
     {
         return $shaComposer->compose($this->parameters, true) == $this->shaSign;
     }

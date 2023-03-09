@@ -6,8 +6,13 @@ class Encoding
 {
     /**
      * Convert character encoding.
+     *
+     * @param string|array $data
+     * @param string $in_charset
+     * @param string $out_charset
+     * @return string|array
      */
-    public static function convert(array|string $data, string $in_charset, string $out_charset): array|string
+    public static function convert($data, $in_charset, $out_charset)
     {
         if (is_string($data)) {
             $data = mb_convert_encoding($data, $out_charset, $in_charset);
@@ -31,17 +36,21 @@ class Encoding
 
     /**
      * Convert data from UTF-8 to Western European.
+     *
+     * @param string|array $data
+     * @return string|array
      */
-    public static function convertToLatin(array|string $data): array|string
-    {
+    public static function convertToLatin($data) {
         return self::convert($data, 'UTF-8', 'ISO-8859-1');
     }
 
     /**
      * Convert data from Western European to UTF-8.
+     *
+     * @param string|array $data
+     * @return string|array
      */
-    public static function convertToUtf8(array|string $data): array|string
-    {
+    public static function convertToUtf8($data) {
         return self::convert($data, 'ISO-8859-1', 'UTF-8');
     }
 }

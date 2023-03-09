@@ -16,9 +16,6 @@ namespace Ogone;
  */
 final class Passphrase implements \Stringable
 {
-    /**
-     * @var string
-     */
     private string $passphrase;
 
     /** @@codeCoverageIgnore */
@@ -35,6 +32,6 @@ final class Passphrase implements \Stringable
      */
     public function __toString(): string
     {
-        return $this->passphrase;
+        return (string) $this->passphrase;
     }
 }

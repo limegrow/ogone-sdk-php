@@ -19,9 +19,7 @@ class DirectLinkMaintenanceResponseTest extends \PHPUnit_Framework_TestCase
         $maintenanceResponse = new DirectLinkMaintenanceResponse('');
     }
 
-    /** @test
-     * @throws \Exception
-     */
+    /** @test */
     public function ParametersCanBeRetrieved()
     {
         $xml = $this->provideXML();
@@ -33,7 +31,6 @@ class DirectLinkMaintenanceResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException InvalidArgumentException
-     * @throws \Exception
      */
     public function RequestIsFilteredFromNonOgoneParameters()
     {
@@ -46,7 +43,6 @@ class DirectLinkMaintenanceResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException InvalidArgumentException
-     * @throws \Exception
      */
     public function ChecksInvalidXml()
     {
@@ -55,9 +51,7 @@ class DirectLinkMaintenanceResponseTest extends \PHPUnit_Framework_TestCase
         $maintenanceResponse = new DirectLinkMaintenanceResponse($xml);
     }
 
-    /** @test
-     * @throws \Exception
-     */
+    /** @test */
     public function ChecksStatus()
     {
         $xml = $this->provideXML();
@@ -66,9 +60,7 @@ class DirectLinkMaintenanceResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($maintenanceResponse->isSuccessful());
     }
 
-    /** @test
-     * @throws \Exception
-     */
+    /** @test */
     public function AmountIsConvertedToCent()
     {
         $xml = $this->provideXML();
@@ -77,15 +69,18 @@ class DirectLinkMaintenanceResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(100, $maintenanceResponse->getParam('amount'));
     }
 
-    public function provideFloats(): array
+    public function provideFloats()
     {
-        return [['17.89', 1789], ['65.35', 6535], ['12.99', 1299]];
+        return array(
+            array('17.89', 1789),
+            array('65.35', 6535),
+            array('12.99', 1299),
+        );
     }
 
     /**
      * @test
      * @dataProvider provideFloats
-     * @throws \Exception
      */
     public function CorrectlyConvertsFloatAmountsToInteger($string, $integer)
     {
@@ -98,10 +93,10 @@ class DirectLinkMaintenanceResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * Helper method to setup an xml-string
      */
-    private function provideXML($amount = null): string
+    private function provideXML($amount = null)
     {
 
-        return '<?xml version="1.0"?>
+        $xml = '<?xml version="1.0"?>
                 <ncresponse
                 orderID="5"
                 PAYID="33146134"
@@ -112,15 +107,19 @@ class DirectLinkMaintenanceResponseTest extends \PHPUnit_Framework_TestCase
                 AMOUNT="'.($amount ?: '1').'"
                 CURRENCY="GBP">
                 </ncresponse>';
+
+        return $xml;
     }
 
     /**
      * Helper method to setup an invalid xml-string
      */
-    private function provideInvalidXML(): string
+    private function provideInvalidXML()
     {
-        return '<?xml version="1.0"?>
+        $xml = '<?xml version="1.0"?>
                 <ncresponse
                 </ncresponse>';
+
+        return $xml;
     }
 }

@@ -65,8 +65,23 @@ class LegacyShaComposerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::SHA512STRING, $shaString);
     }
 
-    private function provideRequest(): array
+    private function provideRequest()
     {
-        return ['ACCEPTANCE' => 'test123', 'AMOUNT' => '19.08', 'BRAND' => 'VISA', 'CARDNO' => 'XXXXXXXXXXXX1111', 'CN' => 'Marlon', 'CURRENCY' => 'EUR', 'ED' => '0113', 'IP' => '81.82.214.142', 'NCERROR' => 0, 'ORDERID' => 2_101_947_639, 'PAYID' => 10_673_859, 'PM' => 'CreditCard', 'STATUS' => PaymentResponse::STATUS_AUTHORISED, 'TRXDATE' => '07/05/11'];
+        return array(
+            'ACCEPTANCE' => 'test123',
+            'AMOUNT' => '19.08',
+            'BRAND' => 'VISA',
+            'CARDNO' => 'XXXXXXXXXXXX1111',
+            'CN' => 'Marlon',
+            'CURRENCY' => 'EUR',
+            'ED' => '0113',
+            'IP' => '81.82.214.142',
+            'NCERROR' => 0,
+            'ORDERID' => 2_101_947_639,
+            'PAYID' => 10_673_859,
+            'PM' => 'CreditCard',
+            'STATUS' => PaymentResponse::STATUS_AUTHORISED,
+            'TRXDATE' => '07/05/11'
+        );
     }
 }

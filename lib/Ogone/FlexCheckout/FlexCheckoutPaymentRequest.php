@@ -11,7 +11,7 @@ class FlexCheckoutPaymentRequest extends AbstractPaymentRequest
 
     const PRODUCTION = "https://secure.ogone.com/Tokenization/HostedPage";
 
-    protected array $payment_methods = [
+    protected $payment_methods = [
         "CreditCard",
         "DirectDebit",
     ];
@@ -22,31 +22,37 @@ class FlexCheckoutPaymentRequest extends AbstractPaymentRequest
         $this->ogoneUri    = self::TEST;
     }
 
-    public function getCheckoutUrl(): string
+    public function getCheckoutUrl()
     {
         return $this->getOgoneUri()."?". http_build_query($this->toArray());
     }
 
-    public function getRequiredFields(): array
+    public function getRequiredFields()
     {
-        return ['account.pspid', 'alias.orderid', 'card.paymentmethod', 'parameters.accepturl', 'parameters.exceptionurl'];
+        return array(
+            'account.pspid',
+            'alias.orderid',
+            'card.paymentmethod',
+            'parameters.accepturl',
+            'parameters.exceptionurl',
+        );
     }
 
-    public function setPspId($pspid): FlexCheckoutPaymentRequest|static
+    public function setPspId($pspid)
     {
         $this->parameters['account.pspid'] = $pspid;
 
         return $this;
     }
 
-    public function setOrderId($orderid): AbstractPaymentRequest|FlexCheckoutPaymentRequest|static
+    public function setOrderId($orderid)
     {
         $this->parameters['alias.orderid'] = $orderid;
 
         return $this;
     }
 
-    public function setAliasId(Alias $alias): static
+    public function setAliasId(Alias $alias)
     {
         $this->parameters['alias.aliasid'] = $alias->getAlias();
 
@@ -55,10 +61,10 @@ class FlexCheckoutPaymentRequest extends AbstractPaymentRequest
 
     /**
      * Force saving alias
+     * @param bool $force
      * @return $this
      */
-    public function setForceAliasSave(bool $force = false): static
-    {
+    public function setForceAliasSave($force = false) {
         if ($force) {
             if (!isset($this->parameters['alias.aliasid'])) {
                 $this->parameters['alias.aliasid'] = '';
@@ -74,15 +80,16 @@ class FlexCheckoutPaymentRequest extends AbstractPaymentRequest
      * It indicates whether you want to store a temporary (N) or indefinite (Y) Alias. The possible values are:
      * "N": the alias will be deleted after 2 hours.
      * "Y": the alias will be stored indefinitely, for future use.
+     * @param $value
      */
-    public function setStorePermanently(string $value): static
+    public function setStorePermanently($value)
     {
         $this->parameters['alias.storepermanently'] = $value;
 
         return $this;
     }
 
-    public function setPm($payment_method): static
+    public function setPm($payment_method)
     {
         //if (!in_array($payment_method, $this->payment_methods)) {
         //    throw new \InvalidArgumentException("Unknown Payment method [$payment_method].");
@@ -92,7 +99,7 @@ class FlexCheckoutPaymentRequest extends AbstractPaymentRequest
         return $this;
     }
 
-    public function setAccepturl($accepturl): FlexCheckoutPaymentRequest|static
+    public function setAccepturl($accepturl)
     {
         $this->validateUri($accepturl);
         $this->parameters['parameters.accepturl'] = $accepturl;
@@ -100,7 +107,7 @@ class FlexCheckoutPaymentRequest extends AbstractPaymentRequest
         return $this;
     }
 
-    public function setExceptionurl($exceptionurl): FlexCheckoutPaymentRequest|static
+    public function setExceptionurl($exceptionurl)
     {
         $this->validateUri($exceptionurl);
         $this->parameters['parameters.exceptionurl'] = $exceptionurl;
@@ -108,35 +115,35 @@ class FlexCheckoutPaymentRequest extends AbstractPaymentRequest
         return $this;
     }
 
-    public function setLanguage($language): FlexCheckoutPaymentRequest|static
+    public function setLanguage($language)
     {
         $this->parameters['layout.language'] = $language;
 
         return $this;
     }
 
-    public function setShaSign(): static
+    public function setShaSign()
     {
         $this->parameters['shasignature.shasign'] = parent::getShaSign();
 
         return $this;
     }
 
-    public function setTemplate($template): static
+    public function setTemplate($template)
     {
         $this->parameters['layout.templatename'] = $template;
 
         return $this;
     }
 
-    public function setPaymentBrand($brand): static
+    public function setPaymentBrand($brand)
     {
         $this->parameters['card.brand'] = $brand;
 
         return $this;
     }
 
-    protected function getValidOperations(): array
+    protected function getValidOperations()
     {
         return [];
     }

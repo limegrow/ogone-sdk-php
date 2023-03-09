@@ -112,22 +112,34 @@ class SubscriptionPeriodTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($moment, $period->getMoment());
     }
 
-    public function unitProvider(): array
+    public function unitProvider()
     {
-        return [[SubscriptionPeriod::UNIT_DAILY], [SubscriptionPeriod::UNIT_WEEKLY], [SubscriptionPeriod::UNIT_MONTHLY]];
+        return array(
+            array(SubscriptionPeriod::UNIT_DAILY),
+            array(SubscriptionPeriod::UNIT_WEEKLY),
+            array(SubscriptionPeriod::UNIT_MONTHLY)
+        );
     }
 
-    public function intProvider(): array
+    public function intProvider()
     {
-        return [[1], [5], [32], [123546]];
+        return array(
+            array(1),
+            array(5),
+            array(32),
+            array(123546)
+        );
     }
 
-    public function badUnitMomentComboProvider(): array
+    public function badUnitMomentComboProvider()
     {
-        return [[SubscriptionPeriod::UNIT_WEEKLY, 8], [SubscriptionPeriod::UNIT_MONTHLY, 29]];
+        return array(
+            array(SubscriptionPeriod::UNIT_WEEKLY, 8),
+            array(SubscriptionPeriod::UNIT_MONTHLY, 29)
+        );
     }
 
-    protected function createPeriod($unit = SubscriptionPeriod::UNIT_DAILY, $interval = 12, $moment = 6): SubscriptionPeriod
+    protected function createPeriod($unit = SubscriptionPeriod::UNIT_DAILY, $interval = 12, $moment = 6)
     {
         return new SubscriptionPeriod($unit, $interval, $moment);
     }

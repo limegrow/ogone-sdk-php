@@ -31,7 +31,7 @@ class CreateAliasResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function CannotExistWithoutShaSign()
     {
-        $createAliasResponse = new CreateAliasResponse([]);
+        $createAliasResponse = new CreateAliasResponse(array());
     }
 
     /** @test */
@@ -67,18 +67,17 @@ class CreateAliasResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * Helper method to setup a request array
      */
-    private function provideRequest(): array
+    private function provideRequest()
     {
-        return [
+        return array(
             'SHASIGN' => FakeShaComposer::FAKESHASTRING,
-            'UNKNOWN_PARAM' => false,
-            /* unkown parameter, should be filtered out */
+            'UNKNOWN_PARAM' => false, /* unkown parameter, should be filtered out */
             'status' => 0,
             'orderID' => '48495482424',
             'alias' => 'customer_123',
             'CN' => 'John Doe',
             'CARDNO' => 'xxxxxxxxxxx4848',
-            'ED' => '1220',
-        ];
+            'ED' => '1220'
+        );
     }
 }

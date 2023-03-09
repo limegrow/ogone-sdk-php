@@ -17,15 +17,15 @@ class SimpleFormGenerator implements FormGenerator
 {
     /**
      * @deprecated
-     * @var string|null
+     * @var null
      */
-    private ?string $formName = null;
+    private $formName = null;
 
     /**
      * @deprecated
-     * @var string|null
+     * @var null
      */
-    private ?string $showSubmitButton = null;
+    private $showSubmitButton = null;
 
     /**
      * @param EcommercePaymentRequest $ecommercePaymentRequest
@@ -34,10 +34,10 @@ class SimpleFormGenerator implements FormGenerator
      * @param string $textSubmitButton The text displayed on the submit button of the form. Defaults to "Submit"
      * @return string HTML
      */
-    public function render(EcommercePaymentRequest $ecommercePaymentRequest, string $formName = 'ogone', bool $showSubmitButton = true, string $textSubmitButton = 'Submit'): string
+    public function render(EcommercePaymentRequest $ecommercePaymentRequest, $formName = 'ogone', $showSubmitButton = true, $textSubmitButton = 'Submit')
     {
-        $formName = null !== $this->formName??$formName;
-        $showSubmitButton = null !== $this->showSubmitButton??$showSubmitButton;
+        $formName = $this->formName ?? $formName;
+        $showSubmitButton = $this->showSubmitButton ?? $showSubmitButton;
 
         ob_start();
         include __DIR__.'/template/simpleForm.php';
@@ -45,9 +45,10 @@ class SimpleFormGenerator implements FormGenerator
     }
 
     /**
-     *@deprecated Will be removed in next major released, directly integrated in render method.
+     * @deprecated Will be removed in next major released, directly integrated in render method.
+     * @param bool $bool
      */
-    public function showSubmitButton(bool $bool = true)
+    public function showSubmitButton($bool = true)
     {
         $this->showSubmitButton = $bool;
     }

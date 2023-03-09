@@ -25,9 +25,11 @@ class CreateAliasRequest extends AbstractRequest
         $this->ogoneUri = self::TEST;
     }
 
-    public function getRequiredFields(): array
+    public function getRequiredFields()
     {
-        return ['pspid', 'accepturl', 'exceptionurl'];
+        return array(
+            'pspid', 'accepturl', 'exceptionurl'
+        );
     }
 
     public function setAlias(Alias $alias)

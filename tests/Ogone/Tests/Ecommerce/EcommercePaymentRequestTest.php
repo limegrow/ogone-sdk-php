@@ -71,46 +71,47 @@ class EcommercePaymentRequestTest extends TestCase
         $paymentRequest->getFoobar();
     }
 
-    public function provideBadParameters(): array
+    public function provideBadParameters()
     {
         $longString = str_repeat('longstring', 100);
         $notAUri = 'http://not a uri';
         $longUri = "http://www.example.com/$longString";
 
-        return [
-            ['setAccepturl', $notAUri],
-            ['setAmount', 10.50],
-            ['setAmount', -1],
-            ['setAmount', 1_000_000_000_000_000],
-            ['setBrand', 'Oxfam'],
-            ['setCancelurl', $notAUri],
-            ['setCancelurl', $longUri],
-            ['setCurrency', 'Belgische Frank'],
+        return array(
+            array('setAccepturl', $notAUri),
+            array('setAmount', 10.50),
+            array('setAmount', -1),
+            array('setAmount', 1_000_000_000_000_000),
+            array('setBrand', 'Oxfam'),
+            array('setCancelurl', $notAUri),
+            array('setCancelurl', $longUri),
+            array('setCurrency', 'Belgische Frank'),
             //array('setCustomername', ''),
-            ['setDeclineurl', $notAUri],
-            ['setDynamicTemplateUri', $notAUri],
-            ['setEmail', 'foo @ bar'],
-            ['setEmail', "$longString@example.com"],
-            ['setExceptionurl', $notAUri],
+            array('setDeclineurl', $notAUri),
+            array('setDynamicTemplateUri', $notAUri),
+            array('setEmail', 'foo @ bar'),
+            array('setEmail', "$longString@example.com"),
+            array('setExceptionurl', $notAUri),
             //array('setFeedbackMessage', ''),
             //array('setFeedbackParams', ''),
-            ['setLanguage', 'West-Vlaams'],
-            ['setOgoneUri', $notAUri],
-            ['setOrderDescription', $longString],
-            ['setOrderid', "Weird çh@®a©†€rs"],
-            ['setOrderid', $longString],
-            ['setOwnerAddress', $longString],
-            ['setOwnercountry', 'Benidorm'],
-            ['setOwnerPhone', $longString],
-            ['setOwnerTown', $longString],
-            ['setOwnerZip', $longString],
-            ['setParamvar', $longString],
-            ['setPaymentMethod', 'Digital'],
-            ['setPspid', $longString],
-        ];
+            array('setLanguage', 'West-Vlaams'),
+            array('setOgoneUri', $notAUri),
+            array('setOrderDescription', $longString),
+            array('setOrderid', "Weird çh@®a©†€rs"),
+            array('setOrderid', $longString),
+            array('setOwnerAddress', $longString),
+            array('setOwnercountry', 'Benidorm'),
+            array('setOwnerPhone', $longString),
+            array('setOwnerTown', $longString),
+            array('setOwnerZip', $longString),
+            array('setParamvar', $longString),
+            array('setPaymentMethod', 'Digital'),
+            array('setPspid', $longString),
+        );
     }
 
-    private function provideCompletePaymentRequest(): EcommercePaymentRequest
+    /** @return EcommercePaymentRequest */
+    private function provideCompletePaymentRequest()
     {
         $paymentRequest = $this->provideMinimalPaymentRequest();
 
@@ -127,7 +128,7 @@ class EcommercePaymentRequestTest extends TestCase
         $paymentRequest->setBrand('VISA');
 
         $paymentRequest->setFeedbackMessage("Thanks for ordering");
-        $paymentRequest->setFeedbackParams(['amountOfProducts' => '5', 'usedCoupon' => 1]);
+        $paymentRequest->setFeedbackParams(array('amountOfProducts' => '5', 'usedCoupon' => 1));
         $paymentRequest->setParamvar('aParamVar');
         $paymentRequest->setOrderDescription("Four horses and a carriage");
 

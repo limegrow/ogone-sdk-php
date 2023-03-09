@@ -152,212 +152,83 @@ abstract class AbstractRequest implements Request
     const WIN3DS_POPIX = 'POPIX';
 
     /** @var ShaComposer */
-    protected ShaComposer $shaComposer;
+    protected $shaComposer;
 
-    protected string $ogoneUri;
+    protected $ogoneUri;
 
-    protected array $parameters = [];
+    protected $parameters = array();
 
     /** @var LoggerInterface|null */
-    protected ?LoggerInterface $logger = null;
+    protected $logger;
 
-    protected array $ogoneFields = [
-        'orig',
-        'shoppingcartextensionid',
-        'pspid',
-        'orderid',
-        'com',
-        'amount',
-        'currency',
-        'language',
-        'cn',
-        'email',
-        'cardno',
-        'cvc',
-        'ed',
-        'ownerzip',
-        'owneraddress',
-        'ownercty',
-        'ownertown',
-        'ownertelno',
-        'homeurl',
-        'catalogurl',
-        'accepturl',
-        'declineurl',
-        'exceptionurl',
-        'cancelurl',
-        'backurl',
-        'complus',
-        'paramplus',
-        'pm',
-        'brand',
-        'title',
-        'bgcolor',
-        'txtcolor',
-        'tblbgcolor',
-        'tbltxtcolor',
-        'buttonbgcolor',
-        'buttontxtcolor',
-        'logo',
-        'fonttype',
-        'tp',
-        'paramvar',
-        'alias',
-        'aliasoperation',
-        'aliasusage',
-        'aliaspersistedafteruse',
-        'device',
-        'pmlisttype',
-        'ecom_payment_card_verification',
-        'operation',
-        'withroot',
-        'remote_addr',
-        'rtimeout',
-        'pmlist',
-        'exclpmlist',
-        'creditdebit',
-        'userid',
+
+
+    protected $ogoneFields = array(
+        'orig', 'shoppingcartextensionid', 'pspid', 'orderid', 'com', 'amount', 'currency', 'language', 'cn', 'email',
+        'cardno', 'cvc', 'ed', 'ownerzip', 'owneraddress', 'ownercty', 'ownertown', 'ownertelno',
+        'homeurl', 'catalogurl', 'accepturl', 'declineurl', 'exceptionurl', 'cancelurl', 'backurl',
+        'complus', 'paramplus', 'pm', 'brand', 'title', 'bgcolor', 'txtcolor', 'tblbgcolor',
+        'tbltxtcolor', 'buttonbgcolor', 'buttontxtcolor', 'logo', 'fonttype', 'tp', 'paramvar',
+        'alias', 'aliasoperation', 'aliasusage', 'aliaspersistedafteruse', 'device', 'pmlisttype',
+        'ecom_payment_card_verification', 'operation', 'withroot', 'remote_addr', 'rtimeout',
+        'pmlist', 'exclpmlist', 'creditdebit', 'userid',
         // DirectLink with 3-D Secure: Extra request parameters.
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/directlink-3-d/3-d-transaction-flow-via-directlink#extrarequestparameters
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/directlink-3-d/version%202#3dtransactionflowviadirectlink
         // https://payment-services.ingenico.com/ogone/support/~/media/kdb/integration%20guides/directlink%203ds%20v2/odl3dsnew%20parameters%20name%2021en.ashx?la=en
-        'flag3d',
-        'http_accept',
-        'http_user_agent',
-        'win3ds',
+        'flag3d', 'http_accept', 'http_user_agent', 'win3ds',
         // MPI 2.0 (3DS V.2)
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/directlink-3-d/3-d%20secure%20v2
-        'browseracceptheader',
-        'browsercolordepth',
-        'browserjavaenabled',
-        'browserlanguage',
-        'browserscreenheight',
-        'browserscreenwidth',
-        'browsertimezone',
-        'browseruseragent',
+        'browseracceptheader', 'browsercolordepth', 'browserjavaenabled', 'browserlanguage', 'browserscreenheight',
+        'browserscreenwidth', 'browsertimezone', 'browseruseragent',
         // Optional integration data: Delivery and Invoicing data.
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/additional-data/delivery-and-invoicing-data
         // Klarna
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/klarna
         // After pay
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/afterpay
-        'addrmatch',
-        'civility',
-        'cuid',
-        'ecom_billto_postal_city',
-        'ecom_billto_postal_countrycode',
-        'ecom_billto_postal_name_first',
-        'ecom_billto_postal_name_last',
-        'ecom_billto_postal_postalcode',
-        'ecom_billto_postal_street_line1',
-        'ecom_billto_postal_street_line2',
-        'ecom_billto_postal_street_line3',
-        'ecom_billto_postal_street_number',
-        'ecom_shipto_dob',
-        'ecom_shipto_online_email',
-        'ecom_shipto_postal_city',
-        'ecom_shipto_postal_countrycode',
-        'ecom_shipto_postal_name_first',
-        'ecom_shipto_postal_name_last',
-        'ecom_shipto_postal_name_prefix',
-        'ecom_shipto_postal_postalcode',
-        'ecom_shipto_postal_state',
-        'ecom_shipto_postal_street_line1',
-        'ecom_shipto_postal_street_line2',
-        'ecom_shipto_postal_street_line3',
-        'ecom_shipto_postal_street_number',
-        'ecom_consumer_gender',
-        'ecom_billto_postal_name_prefix',
-        'ecom_shipto_postal_name_prefix',
-        'ecom_billto_postal_state',
-        'ecom_shipto_postal_state',
-        'ecom_billto_tva',
-        'ecom_shipto_tva',
-        'ecom_billto_company',
-        'ecom_shipto_company',
-        'ecom_billto_telecom_fax_number',
-        'ecom_shipto_telecom_fax_number',
-        'ecom_billto_telecom_phone_number',
-        'ecom_shipto_telecom_phone_number',
+        'addrmatch', 'civility', 'cuid', 'ecom_billto_postal_city', 'ecom_billto_postal_countrycode',
+        'ecom_billto_postal_name_first', 'ecom_billto_postal_name_last', 'ecom_billto_postal_postalcode',
+        'ecom_billto_postal_street_line1', 'ecom_billto_postal_street_line2', 'ecom_billto_postal_street_line3',
+        'ecom_billto_postal_street_number', 'ecom_shipto_dob',
+        'ecom_shipto_online_email', 'ecom_shipto_postal_city', 'ecom_shipto_postal_countrycode',
+        'ecom_shipto_postal_name_first', 'ecom_shipto_postal_name_last', 'ecom_shipto_postal_name_prefix',
+        'ecom_shipto_postal_postalcode', 'ecom_shipto_postal_state',
+        'ecom_shipto_postal_street_line1', 'ecom_shipto_postal_street_line2','ecom_shipto_postal_street_line3',
+        'ecom_shipto_postal_street_number', 'ecom_consumer_gender',
+        'ecom_billto_postal_name_prefix', 'ecom_shipto_postal_name_prefix',
+        'ecom_billto_postal_state', 'ecom_shipto_postal_state',
+        'ecom_billto_tva', 'ecom_shipto_tva',
+        'ecom_billto_company', 'ecom_shipto_company',
+        'ecom_billto_telecom_fax_number', 'ecom_shipto_telecom_fax_number',
+        'ecom_billto_telecom_phone_number', 'ecom_shipto_telecom_phone_number',
         // Klarna
-        'ecom_billto_postal_county',
-        'ecom_shipto_postal_county',
+        'ecom_billto_postal_county','ecom_shipto_postal_county',
         'ecom_shipto_county',
-        'ordershipcost',
-        'ordershiptax',
-        'ordershipmeth',
-        'ordershiptaxcode',
-        'datein',
-        'ref_customerref',
-        'costcenter',
-        'ref_customerid',
+        'ordershipcost', 'ordershiptax', 'ordershipmeth', 'ordershiptaxcode',
+        'datein', 'ref_customerref', 'costcenter', 'ref_customerid',
         // Optional integration data: Order data ("ITEM" parameters).
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/additional-data/order-data
-        'itemattributes*',
-        'itemcategory*',
-        'itemcomments*',
-        'itemdesc*',
-        'itemdiscount*',
-        'itemid*',
-        'itemname*',
-        'itemprice*',
-        'itemquant*',
-        'itemquantorig*',
-        'itemunitofmeasure*',
-        'itemvat*',
-        'itemvatcode*',
-        'itemweight*',
-        'taxincluded*',
+        'itemattributes*', 'itemcategory*', 'itemcomments*', 'itemdesc*', 'itemdiscount*',
+        'itemid*', 'itemname*', 'itemprice*', 'itemquant*', 'itemquantorig*',
+        'itemunitofmeasure*', 'itemvat*', 'itemvatcode*', 'itemweight*', 'taxincluded*',
         // Optional integration data: Travel data.
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/additional-data/travel-data
-        'datatype',
-        'aiairname',
-        'aitinum',
-        'aitidate',
-        'aiconjti',
-        'aipasname',
-        'aiextrapasname*',
-        'aichdet',
-        'aiairtax',
-        'aivatamnt',
-        'aivatappl',
-        'aitypch',
-        'aieycd',
-        'aiirst',
-        'aiorcity*',
-        'aiorcityl*',
-        'aidestcity*',
-        'aidestcityl*',
-        'aistopov*',
-        'aicarrier*',
-        'aibookind*',
-        'aiflnum*',
-        'aifldate*',
-        'aiclass*',
+        'datatype', 'aiairname', 'aitinum', 'aitidate', 'aiconjti', 'aipasname',
+        'aiextrapasname*', 'aichdet', 'aiairtax', 'aivatamnt', 'aivatappl', 'aitypch',
+        'aieycd', 'aiirst', 'aiorcity*', 'aiorcityl*', 'aidestcity*', 'aidestcityl*',
+        'aistopov*', 'aicarrier*', 'aibookind*', 'aiflnum*', 'aifldate*', 'aiclass*',
         // Subscription Manager.
         // https://payment-services.ingenico.com/int/en/ogone/support/guides/integration%20guides/subscription-manager/via-e-commerce-and-directlink#input
-        'subscription_id',
-        'sub_amount',
-        'sub_com',
-        'sub_orderid',
-        'sub_period_unit',
-        'sub_period_number',
-        'sub_period_moment',
-        'sub_startdate',
-        'sub_enddate',
-        'sub_status',
-        'sub_comment',
+        'subscription_id', 'sub_amount', 'sub_com', 'sub_orderid', 'sub_period_unit',
+        'sub_period_number', 'sub_period_moment', 'sub_startdate', 'sub_enddate',
+        'sub_status', 'sub_comment',
         // Limonetik
         // @see https://epayments-support.ingenico.com/en/payment-methods/alternative-payment-methods/limonetik
-        'ecom_billto_postal_name_prefix',
-        'ecom_billto_telecom_phone_number',
-        'ecom_billto_telecom_mobile_number',
-        'ecom_shipto_telecom_mobile_number',
-        'ecom_shipmethod',
-        'ecom_shipmethoddetails',
-        'ecom_estimateddeliverydate',
-        'ecom_shipmethodspeed',
-    ];
+        'ecom_billto_postal_name_prefix', 'ecom_billto_telecom_phone_number',
+        'ecom_billto_telecom_mobile_number', 'ecom_shipto_telecom_mobile_number', 'ecom_shipmethod',
+        'ecom_shipmethoddetails', 'ecom_estimateddeliverydate', 'ecom_shipmethodspeed'
+    );
 
     /**
      * Sets Logger.
@@ -366,7 +237,7 @@ abstract class AbstractRequest implements Request
      *
      * @return $this
      */
-    public function setLogger(LoggerInterface $logger = null): static
+    public function setLogger(LoggerInterface $logger = null)
     {
         $this->logger = $logger;
 
@@ -374,13 +245,13 @@ abstract class AbstractRequest implements Request
     }
 
     /** @return string */
-    public function getShaSign(): string
+    public function getShaSign()
     {
         return $this->shaComposer->compose($this->toArray());
     }
 
     /** @return string */
-    public function getOgoneUri(): string
+    public function getOgoneUri()
     {
         return $this->ogoneUri;
     }
@@ -389,9 +260,10 @@ abstract class AbstractRequest implements Request
      * Ogone uri to send the customer to.
      * Usually PaymentRequest::TEST or PaymentRequest::PRODUCTION
      *
+     * @param string $ogoneUri
      * @return $this
      */
-    public function setOgoneUri(string $ogoneUri): static
+    public function setOgoneUri($ogoneUri)
     {
         $this->validateOgoneUri($ogoneUri);
         $this->ogoneUri = $ogoneUri;
@@ -404,7 +276,7 @@ abstract class AbstractRequest implements Request
      * @param $id
      * @return $this
      */
-    public function setShoppingCartExtensionId($id): static
+    public function setShoppingCartExtensionId($id)
     {
         $this->parameters['shoppingcartextensionid'] = $id;
 
@@ -415,7 +287,7 @@ abstract class AbstractRequest implements Request
      * Get Shopping Cart Extension Id
      * @return mixed
      */
-    public function getShoppingCartExtensionId(): mixed
+    public function getShoppingCartExtensionId()
     {
         return isset($this->parameters['shoppingcartextensionid']) ?: $this->parameters['shoppingcartextensionid'];
     }
@@ -425,7 +297,7 @@ abstract class AbstractRequest implements Request
      * @param $id
      * @return $this
      */
-    public function setOrig($id): static
+    public function setOrig($id)
     {
         $this->parameters['orig'] = $id;
 
@@ -436,17 +308,18 @@ abstract class AbstractRequest implements Request
      * Get Orig (Plugin version number)
      * @return mixed
      */
-    public function getOrig(): mixed
+    public function getOrig()
     {
         return isset($this->parameters['orig']) ?: $this->parameters['orig'];
     }
 
     /**
+     * @param $pspid
      * @return $this
      */
-    public function setPspid(string $pspid): static
+    public function setPspid($pspid)
     {
-        if (strlen($pspid) > 30) {
+        if (strlen((string) $pspid) > 30) {
             throw new InvalidArgumentException('PSPId is too long');
         }
         $this->parameters['pspid'] = $pspid;
@@ -457,7 +330,7 @@ abstract class AbstractRequest implements Request
     /**
      * @return $this
      */
-    public function setSecure(): static
+    public function setSecure()
     {
         return $this->setWin3DS(self::WIN3DS_MAIN);
     }
@@ -465,12 +338,13 @@ abstract class AbstractRequest implements Request
     /**
      * ISO code eg nl_BE.
      *
+     * @param $language
      * @return $this
      */
-    public function setLanguage(string $language): static
+    public function setLanguage($language)
     {
         // Workaround for Denmark browsers
-        if (strtolower($language) === 'da_dk') {
+        if (strtolower((string) $language) === 'da_dk') {
             $language = 'dk_DK';
         }
 
@@ -482,9 +356,10 @@ abstract class AbstractRequest implements Request
     /**
      * Alias for setCn
      *
+     * @param $customername
      * @return $this
      */
-    public function setCustomername(string $customername): static
+    public function setCustomername($customername)
     {
         $this->setCn($customername);
 
@@ -492,19 +367,21 @@ abstract class AbstractRequest implements Request
     }
 
     /**
+     * @param $cn
      * @return $this
      */
-    public function setCn(string $cn): static
+    public function setCn($cn)
     {
-        $this->parameters['cn'] = str_replace(["'", '"'], '', $cn); // replace quotes
+        $this->parameters['cn'] = str_replace(array("'", '"'), '', (string) $cn); // replace quotes
 
         return $this;
     }
 
     /**
+     * @param $homeurl
      * @return $this
      */
-    public function setHomeurl(string $homeurl): static
+    public function setHomeurl($homeurl)
     {
         if (!empty($homeurl)) {
             $this->validateUri($homeurl);
@@ -518,7 +395,7 @@ abstract class AbstractRequest implements Request
      * @param $accepturl
      * @return $this
      */
-    public function setAccepturl($accepturl): static
+    public function setAccepturl($accepturl)
     {
         $this->validateUri($accepturl);
         $this->parameters['accepturl'] = $accepturl;
@@ -530,7 +407,7 @@ abstract class AbstractRequest implements Request
      * @param $declineurl
      * @return $this
      */
-    public function setDeclineurl($declineurl): static
+    public function setDeclineurl($declineurl)
     {
         $this->validateUri($declineurl);
         $this->parameters['declineurl'] = $declineurl;
@@ -542,7 +419,7 @@ abstract class AbstractRequest implements Request
      * @param $exceptionurl
      * @return $this
      */
-    public function setExceptionurl($exceptionurl): static
+    public function setExceptionurl($exceptionurl)
     {
         $this->validateUri($exceptionurl);
         $this->parameters['exceptionurl'] = $exceptionurl;
@@ -554,7 +431,7 @@ abstract class AbstractRequest implements Request
      * @param $cancelurl
      * @return $this
      */
-    public function setCancelurl($cancelurl): static
+    public function setCancelurl($cancelurl)
     {
         $this->validateUri($cancelurl);
         $this->parameters['cancelurl'] = $cancelurl;
@@ -566,7 +443,7 @@ abstract class AbstractRequest implements Request
      * @param $backurl
      * @return $this
      */
-    public function setBackurl($backurl): static
+    public function setBackurl($backurl)
     {
         $this->validateUri($backurl);
         $this->parameters['backurl'] = $backurl;
@@ -577,16 +454,19 @@ abstract class AbstractRequest implements Request
     /**
      * Alias for setParamplus
      *
+     * @param array $feedbackParams
+     * @return AbstractRequest
      */
-    public function setFeedbackParams(array $feedbackParams): static
+    public function setFeedbackParams(array $feedbackParams)
     {
         return $this->setParamplus($feedbackParams);
     }
 
     /**
+     * @param array $paramplus
      * @return $this
      */
-    public function setParamplus(array $paramplus): static
+    public function setParamplus(array $paramplus)
     {
         $this->parameters['paramplus'] = http_build_query($paramplus);
 
@@ -600,7 +480,7 @@ abstract class AbstractRequest implements Request
      * @param $flag
      * @return $this
      */
-    public function setFlag3D($flag): static
+    public function setFlag3D($flag)
     {
         $this->validateYesNo($flag);
         $this->parameters['flag3d'] = $flag;
@@ -616,7 +496,7 @@ abstract class AbstractRequest implements Request
      * @param $http_accept
      * @return $this
      */
-    public function setHttpAccept($http_accept): static
+    public function setHttpAccept($http_accept)
     {
         $this->parameters['http_accept'] = $http_accept;
 
@@ -631,7 +511,7 @@ abstract class AbstractRequest implements Request
      * @param $http_user_agent
      * @return $this
      */
-    public function setHttpUserAgent($http_user_agent): static
+    public function setHttpUserAgent($http_user_agent)
     {
         $this->parameters['http_user_agent'] = $http_user_agent;
 
@@ -645,7 +525,7 @@ abstract class AbstractRequest implements Request
      * @param $win3ds
      * @return $this
      */
-    public function setWin3DS($win3ds): static
+    public function setWin3DS($win3ds)
     {
         $this->validateWin3DS($win3ds);
         $this->parameters['win3ds'] = $win3ds;
@@ -661,7 +541,9 @@ abstract class AbstractRequest implements Request
             }
         }
 
-        $this->logger?->debug(sprintf('Request %s', static::class), $this->parameters);
+        if ($this->logger) {
+            $this->logger->debug(sprintf('Request %s', $this::class), $this->parameters);
+        }
 
         // Validate fields
         foreach ($this->getData() as $key => $value) {
@@ -669,12 +551,12 @@ abstract class AbstractRequest implements Request
         }
     }
 
-    protected function validateUri(string $uri)
+    protected function validateUri($uri)
     {
         if (!filter_var($uri, FILTER_VALIDATE_URL)) {
             throw new InvalidArgumentException('Uri is not valid');
         }
-        if (strlen($uri) > 200) {
+        if (strlen((string) $uri) > 200) {
             throw new InvalidArgumentException('Uri is too long');
         }
     }
@@ -716,7 +598,6 @@ abstract class AbstractRequest implements Request
      *
      * @param $method
      * @param $args
-     * @return bool|mixed|AbstractRequest
      */
     public function __call($method, $args)
     {
@@ -751,17 +632,17 @@ abstract class AbstractRequest implements Request
      * @param $key
      * @return bool
      */
-    public function hasData($key): bool
+    public function hasData($key)
     {
         return isset($this->parameters[$key]);
     }
 
     /**
      * Get Data
-     * @param mixed|null $key
+     * @param mixed $key
      * @return array|mixed
      */
-    public function getData(mixed $key = null): mixed
+    public function getData($key = null)
     {
         if (!$key) {
             return $this->parameters;
@@ -776,7 +657,7 @@ abstract class AbstractRequest implements Request
      * @param null $value
      * @return $this
      */
-    public function setData($key, $value = null): static
+    public function setData($key, $value = null)
     {
         if (is_array($key)) {
             foreach ($key as $key1 => $value1) {
@@ -798,7 +679,7 @@ abstract class AbstractRequest implements Request
      * @param $key
      * @return $this
      */
-    public function unsData($key): static
+    public function unsData($key)
     {
         if ($this->hasData($key)) {
             unset($this->parameters[$key]);
@@ -811,11 +692,14 @@ abstract class AbstractRequest implements Request
      * To Array
      * @return array
      */
-    public function toArray(): array
+    public function toArray()
     {
         $this->validate();
 
-        $params = array_filter($this->parameters, fn($value) => !empty($value));
+        $params = array_filter(
+            $this->parameters,
+            fn($val) => $val !== null || $val !== false || $val !== ''
+        );
         $params = array_change_key_case($params, CASE_UPPER);
 
         foreach ($params as $key => $value) {
@@ -830,9 +714,11 @@ abstract class AbstractRequest implements Request
 
     /**
      * Validate Field
+     * @param string $key
+     * @param string $value
      * @throws InvalidArgumentException
      */
-    public function validateField(string $key, string $value)
+    public function validateField($key, $value)
     {
         $validator = new Validator($key, $value, [
             'data' => $this->parameters
@@ -844,9 +730,12 @@ abstract class AbstractRequest implements Request
     /**
      * Converts field names for setters and getters
      *
+     * @param string $name
+     * @return string
      */
-    protected function _underscore(string $name): string
+    protected function _underscore($name)
     {
-        return strtolower(preg_replace('/(.)([A-Z])/', '$1_$2', $name));
+        $result = strtolower(preg_replace('/(.)([A-Z])/', '$1_$2', $name));
+        return $result;
     }
 }

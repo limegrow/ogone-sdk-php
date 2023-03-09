@@ -9,17 +9,18 @@ use InvalidArgumentException;
 
 abstract class AbstractDirectLinkRequest extends AbstractRequest
 {
-    public function setUserId(string $userid)
+
+    public function setUserId($userid)
     {
-        if (strlen($userid) < 2) {
+        if (strlen((string) $userid) < 2) {
             throw new InvalidArgumentException("User ID is too short");
         }
         $this->parameters['userid'] = $userid;
     }
 
-    public function setPassword(string $password)
+    public function setPassword($password)
     {
-        if (strlen($password) < 8) {
+        if (strlen((string) $password) < 8) {
             throw new InvalidArgumentException("Password is too short");
         }
         $this->parameters['pswd'] = $password;
@@ -35,8 +36,10 @@ abstract class AbstractDirectLinkRequest extends AbstractRequest
         $this->parameters['orderid'] = $orderid;
     }
 
-    protected function getRequiredFieldGroups(): array
+    protected function getRequiredFieldGroups()
     {
-        return [['payid', 'orderid']];
+        return array(
+            array('payid', 'orderid'),
+        );
     }
 }

@@ -38,7 +38,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get Amount
      * @return int Amount in cents
      */
-    public function getAmount(): int
+    public function getAmount()
     {
         if (!$this->hasParam(self::FIELD_AMOUNT)) {
             throw new InvalidArgumentException('Parameter AMOUNT does not exist');
@@ -70,16 +70,20 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * @deprecated
      * @return bool
      */
-    public function isSuccessful(): bool
+    public function isSuccessful()
     {
-        return in_array($this->getStatus(), [PaymentResponse::STATUS_AUTHORISED, PaymentResponse::STATUS_PAYMENT_REQUESTED, PaymentResponse::STATUS_PAYMENT_BY_MERCHANT]);
+        return in_array($this->getStatus(), array(
+            PaymentResponse::STATUS_AUTHORISED,
+            PaymentResponse::STATUS_PAYMENT_REQUESTED,
+            PaymentResponse::STATUS_PAYMENT_BY_MERCHANT
+        ));
     }
 
     /**
      * Check is transaction was successful
      * @return bool
      */
-    public function isTransactionSuccessful(): bool
+    public function isTransactionSuccessful()
     {
         return $this->getErrorCode() === '0';
     }
@@ -88,7 +92,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Check is 3DS required
      * @return bool
      */
-    public function isSecurityCheckRequired(): bool
+    public function isSecurityCheckRequired()
     {
         return $this->getStatus() === 46;
     }
@@ -97,7 +101,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get Status
      * @return int
      */
-    public function getStatus(): int
+    public function getStatus()
     {
         return (int) $this->getParam(self::FIELD_STATUS);
     }
@@ -106,7 +110,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get Order ID
      * @return string
      */
-    public function getOrderId(): string
+    public function getOrderId()
     {
         return $this->getParam(self::FIELD_ORDERID);
     }
@@ -115,7 +119,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get PayID
      * @return string
      */
-    public function getPayID(): string
+    public function getPayID()
     {
         return $this->getParam(self::FIELD_PAYID);
     }
@@ -124,7 +128,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get PayID Sub
      * @return string
      */
-    public function getPayIDSub(): string
+    public function getPayIDSub()
     {
         return $this->getParam(self::FIELD_PAYIDSUB);
     }
@@ -133,7 +137,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get NC Status Code
      * @return string
      */
-    public function getNcStatus(): string
+    public function getNcStatus()
     {
         return $this->getParam(self::FIELD_NCSTATUS);
     }
@@ -142,7 +146,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get Error Code
      * @return string
      */
-    public function getErrorCode(): string
+    public function getErrorCode()
     {
         return $this->getParam(self::FIELD_NCERROR);
     }
@@ -151,7 +155,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get Error Message
      * @return string
      */
-    public function getErrorMessage(): string
+    public function getErrorMessage()
     {
         return $this->hasParam(self::FIELD_NCERRORPLUS) ? $this->getParam(self::FIELD_NCERRORPLUS) : '';
     }
@@ -160,7 +164,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get Currency
      * @return string
      */
-    public function getCurrency(): string
+    public function getCurrency()
     {
         return $this->getParam(self::FIELD_CURRENCY);
     }
@@ -169,7 +173,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get HTML Code that use for 3DS
      * @return string
      */
-    public function getSecurityHTML(): string
+    public function getSecurityHTML()
     {
         return base64_decode($this->getParam(self::FIELD_HTML_ANSWER));
     }
@@ -178,7 +182,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get Alias
      * @return string
      */
-    public function getAlias(): string
+    public function getAlias()
     {
         return $this->getParam(self::FIELD_ALIAS);
     }
@@ -187,16 +191,16 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get Masked Card Number
      * @return string
      */
-    public function getCardno(): string
+    public function getCardno()
     {
         return $this->getParam(self::FIELD_CARDNO);
     }
 
     /**
      * Get Bin of Card number
-     * @return string|null
+     * @return string
      */
-    public function getBin(): ?string
+    public function getBin()
     {
         // "Redirect" method don't returns BIN parameter
         return $this->hasParam(self::FIELD_BIN) ? $this->getParam(self::FIELD_BIN) : null;
@@ -206,7 +210,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get Brand
      * @return string
      */
-    public function getBrand(): string
+    public function getBrand()
     {
         return $this->getParam(self::FIELD_BRAND);
     }
@@ -215,7 +219,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get Payment Method
      * @return string
      */
-    public function getPm(): string
+    public function getPm()
     {
         return $this->getParam(self::FIELD_PM);
     }
@@ -224,7 +228,7 @@ abstract class AbstractPaymentResponse extends AbstractResponse implements Payme
      * Get Expire Date
      * @return string
      */
-    public function getEd(): string
+    public function getEd()
     {
         return $this->getParam(self::FIELD_ED);
     }

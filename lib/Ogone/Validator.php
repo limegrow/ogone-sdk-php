@@ -17,7 +17,7 @@ class Validator
      * Allowed Languages
      * @var array
      */
-    protected array $allowedLanguages = [
+    protected $allowedLanguages = [
         'en_US',
         'cs_CZ',
         'de_DE',
@@ -43,7 +43,7 @@ class Validator
      *
      * @var array
      */
-    protected array $allowedCurrencies = [
+    protected $allowedCurrencies = [
         'AED',
         'ANG',
         'ARS',
@@ -96,7 +96,7 @@ class Validator
      * Fields
      * @var array
      */
-    protected static array $fields = [
+    protected static $fields = [
         // 2.1 Standard Ingenico ePayments fields
         'pspid' => [
             'format' => self::TYPE_ALPHANUMERIC,
@@ -387,17 +387,28 @@ class Validator
 
     /**
      * Field Name
-     * @var string|array|false|null
      */
-    private string|array|null|false $fieldName;
+    private string $fieldName;
+
+    /**
+     * Field Value
+     * @var string
+     */
+    private $fieldValue;
+
+    /**
+     * Options of Validation
+     */
+    private array $validationOptions = [];
 
     /**
      * Validate constructor.
      *
      * @param $key
-     * @param $fieldValue
+     * @param $value
+     * @param array $options
      */
-    public function __construct($key, private $fieldValue, private array $validationOptions = [])
+    public function __construct($key, $value, array $options = [])
     {
         // Check if a string ends with a number
         // Check parameters is like ITEMID*
@@ -408,14 +419,17 @@ class Validator
 
 
         $this->fieldName = mb_strtolower((string) $key, 'UTF-8');
+        $this->fieldValue = $value;
+        $this->validationOptions = $options;
     }
 
     /**
      * Validate
      *
+     * @return bool
      * @throws InvalidArgumentException
      */
-    public function validate(): bool
+    public function validate()
     {
         if (isset(self::$fields[$this->fieldName]) && is_array(self::$fields[$this->fieldName])) {
             $rules = self::$fields[$this->fieldName];
@@ -455,7 +469,7 @@ class Validator
             }
 
             // Validate size
-            if (isset($rules['size']) && mb_strlen((string) $this->fieldValue, 'UTF-8') > $rules['size']) {
+            if (isset($rules['size']) && mb_strlen((string)$this->fieldValue, 'UTF-8') > $rules['size']) {
                 throw new InvalidArgumentException(sprintf('%s is too long', $this->fieldName));
             }
 

@@ -22,5 +22,5 @@ interface ShaComposer
      * @param array $parameters
      * @param bool $useLatinCharset
      */
-    public function compose(array $parameters, bool $useLatinCharset = false);
+    public function compose(array $parameters, $useLatinCharset = false);
 }

@@ -20,13 +20,13 @@ class SubscriptionPeriod
      * @var string
      * ‘d’ = daily, ‘ww’ = weekly, ‘m’ = monthly
      */
-    protected string $unit;
+    protected $unit;
 
     /**
      * @var int
      * Interval between each occurrence of the subscription payments
      */
-    protected int $interval;
+    protected $interval;
 
     /**
      * @var int
@@ -38,29 +38,36 @@ class SubscriptionPeriod
      * Monthly (m):
      *      day of the month
      */
-    protected int $moment;
+    protected $moment;
 
     /**
+     * @param string $unit
+     * @param int $interval
+     * @param int $moment
      * @throws InvalidArgumentException
      */
-    public function __construct(string $unit, int $interval, int $moment)
+    public function __construct($unit, $interval, $moment)
     {
         $this->setUnit($unit);
         $this->setInterval($interval);
         $this->setMoment($moment);
     }
 
-    public function getUnit(): string
+    /**
+     * @return string
+     */
+    public function getUnit()
     {
         return $this->unit;
     }
 
     /**
+     * @param string $unit
      * @throws InvalidArgumentException
      */
-    public function setUnit(string $unit): void
+    public function setUnit($unit)
     {
-        if (!in_array($unit, [self::UNIT_DAILY, self::UNIT_WEEKLY, self::UNIT_MONTHLY])) {
+        if (!in_array($unit, array(self::UNIT_DAILY, self::UNIT_WEEKLY, self::UNIT_MONTHLY))) {
             throw new InvalidArgumentException("Subscription period unit should be '".self::UNIT_DAILY."' (daily), '".self::UNIT_WEEKLY."' (weekly) or '".self::UNIT_MONTHLY."' (monthly)");
         }
 
@@ -74,16 +81,23 @@ class SubscriptionPeriod
         $this->unit = $unit;
     }
 
-    public function getInterval(): int
+    /**
+     * @return int
+     */
+    public function getInterval()
     {
         return $this->interval;
     }
 
     /**
+     * @param int $interval
      * @throws InvalidArgumentException
      */
-    public function setInterval(int $interval): void
+    public function setInterval($interval)
     {
+        if (!is_int($interval)) {
+            throw new InvalidArgumentException("Integer expected for interval");
+        }
         if ($interval < 0) {
             throw new InvalidArgumentException("Interval must be a positive number > 0");
         }
@@ -93,16 +107,23 @@ class SubscriptionPeriod
         $this->interval = $interval;
     }
 
-    public function getMoment(): int
+    /**
+     * @return int
+     */
+    public function getMoment()
     {
         return $this->moment;
     }
 
     /**
+     * @param int $moment
      * @throws InvalidArgumentException
      */
-    public function setMoment(int $moment): void
+    public function setMoment($moment)
     {
+        if (!is_int($moment)) {
+            throw new InvalidArgumentException("Integer expected for moment");
+        }
         if ($moment <= 0) {
             throw new InvalidArgumentException("Moment must be a positive number");
         }
