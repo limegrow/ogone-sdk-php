@@ -18,6 +18,9 @@ abstract class AbstractPaymentRequest extends AbstractRequest
     const MODE_TEST = 'test';
     const MODE_PRODUCTION = 'production';
 
+    const TEST = '';
+    const PRODUCTION = '';
+
     /**
      * Set Mode
      *
@@ -27,9 +30,9 @@ abstract class AbstractPaymentRequest extends AbstractRequest
     public function setMode($mode)
     {
         if ($mode === self::MODE_TEST) {
-            return $this->setOgoneUri(self::TEST);
+            return $this->setOgoneUri(static::TEST);
         } elseif ($mode === self::MODE_PRODUCTION) {
-            return $this->setOgoneUri(self::PRODUCTION);
+            return $this->setOgoneUri(static::PRODUCTION);
         }
 
         throw new InvalidArgumentException('Invalid mode parameter');
@@ -215,6 +218,10 @@ abstract class AbstractPaymentRequest extends AbstractRequest
     {
         $this->parameters['brand'] = $brand;
 
+        if (strtolower($brand) !== 'ideal') {
+            $this->setIssuer(null);
+        }
+
         return $this;
     }
 
@@ -227,6 +234,24 @@ abstract class AbstractPaymentRequest extends AbstractRequest
     {
         $this->parameters['pm'] = $pm;
 
+        if (!str_starts_with(strtolower($pm), 'ideal')) {
+            $this->setIssuer(null);
+        }
+
+        return $this;
+    }
+
+    public function setIssuer(?string $issuerId)
+    {
+        if ($issuerId === null) {
+            unset($this->parameters['issuerid']);
+        } else {
+            $this->setBrand("IDEAL")
+                 ->setPm("IDEAL");
+                 
+            $this->parameters["issuerid"] = $issuerId;
+        }
+        
         return $this;
     }
 
