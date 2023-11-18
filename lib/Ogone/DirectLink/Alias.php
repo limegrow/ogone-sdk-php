@@ -15,14 +15,11 @@ use InvalidArgumentException;
 
 class Alias extends AbstractAlias
 {
-    /** @var string */
-    private $cardName;
+    private ?string $cardName = null;
 
-    /** @var string */
-    private $cardNumber;
+    private ?string $cardNumber = null;
 
-    /** @var string */
-    private $expiryDate;
+    private string $expiryDate;
 
     /**
      * @param $alias
@@ -36,11 +33,11 @@ class Alias extends AbstractAlias
             throw new InvalidArgumentException("Alias cannot be empty");
         }
 
-        if (strlen($alias) > 50) {
+        if (strlen((string) $alias) > 50) {
             throw new InvalidArgumentException("Alias is too long");
         }
 
-        if (preg_match('/[^a-zA-Z0-9_-]/', $alias)) {
+        if (preg_match('/[^a-zA-Z0-9_-]/', (string) $alias)) {
             throw new InvalidArgumentException("Alias cannot contain special characters");
         }
 

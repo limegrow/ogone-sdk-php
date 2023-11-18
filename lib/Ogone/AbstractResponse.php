@@ -120,7 +120,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
         $this->parameters = $this->filterRequestParameters($httpRequest);
 
         if ($this->logger) {
-            $this->logger->debug(sprintf('Response %s', get_class($this)), $this->parameters);
+            $this->logger->debug(sprintf('Response %s', $this::class), $this->parameters);
         }
     }
 
@@ -208,7 +208,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      */
     public function setParam($key, $value)
     {
-        $key = strtoupper($key);
+        $key = strtoupper((string) $key);
         $this->parameters[$key] = $value;
     }
 
@@ -229,6 +229,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @return void
      * @link http://www.php.net/manual/en/arrayaccess.offsetset.php
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $offset = strtoupper($offset);
@@ -246,6 +247,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @return bool
      * @link http://www.php.net/manual/en/arrayaccess.offsetexists.php
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         $offset = strtoupper($offset);
@@ -259,6 +261,7 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @return void
      * @link http://www.php.net/manual/en/arrayaccess.offsetunset.php
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         $offset = strtoupper($offset);
@@ -272,10 +275,11 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      * @return mixed
      * @link http://www.php.net/manual/en/arrayaccess.offsetget.php
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         $offset = strtoupper($offset);
-        return isset($this->parameters[$offset]) ? $this->parameters[$offset] : null;
+        return $this->parameters[$offset] ?? null;
     }
 
     /**
@@ -289,12 +293,12 @@ abstract class AbstractResponse implements Response, \ArrayAccess
      */
     public function __call($method, $arguments)
     {
-        $key = strtoupper(substr($method, 3, strlen($method)));
-        switch (substr($method, 0, 3)) {
+        $key = strtoupper(substr((string) $method, 3, strlen((string) $method)));
+        switch (substr((string) $method, 0, 3)) {
             case 'get':
-                return isset($this->parameters[$key]) ? $this->parameters[$key] : null;
+                return $this->parameters[$key] ?? null;
             case 'set':
-                $this->parameters[$key] = isset($arguments[0]) ? $arguments[0] : null;
+                $this->parameters[$key] = $arguments[0] ?? null;
                 return $this;
             case 'uns':
                 unset($this->parameters[$key]);
@@ -303,6 +307,6 @@ abstract class AbstractResponse implements Response, \ArrayAccess
                 return isset($this->parameters[$key]);
         }
 
-        throw new \Exception(sprintf('Invalid method %s::%s', get_class($this), $method));
+        throw new \Exception(sprintf('Invalid method %s::%s', $this::class, $method));
     }
 }

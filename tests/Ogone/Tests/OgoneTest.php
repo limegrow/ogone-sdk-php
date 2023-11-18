@@ -153,7 +153,7 @@ class OgoneTest extends \PHPUnit_Framework_TestCase
         $request = $client->post(null, null, $body);
         $response = $request->send();
 
-        $url = parse_url($response->getInfo('url'));
+        $url = parse_url((string) $response->getInfo('url'));
         $params = array();
         parse_str($url['query'], $params);
 

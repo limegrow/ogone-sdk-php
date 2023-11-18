@@ -319,7 +319,7 @@ abstract class AbstractRequest implements Request
      */
     public function setPspid($pspid)
     {
-        if (strlen($pspid) > 30) {
+        if (strlen((string) $pspid) > 30) {
             throw new InvalidArgumentException('PSPId is too long');
         }
         $this->parameters['pspid'] = $pspid;
@@ -344,7 +344,7 @@ abstract class AbstractRequest implements Request
     public function setLanguage($language)
     {
         // Workaround for Denmark browsers
-        if (strtolower($language) === 'da_dk') {
+        if (strtolower((string) $language) === 'da_dk') {
             $language = 'dk_DK';
         }
 
@@ -372,7 +372,7 @@ abstract class AbstractRequest implements Request
      */
     public function setCn($cn)
     {
-        $this->parameters['cn'] = str_replace(array("'", '"'), '', $cn); // replace quotes
+        $this->parameters['cn'] = str_replace(array("'", '"'), '', (string) $cn); // replace quotes
 
         return $this;
     }
@@ -542,7 +542,7 @@ abstract class AbstractRequest implements Request
         }
 
         if ($this->logger) {
-            $this->logger->debug(sprintf('Request %s', get_class($this)), $this->parameters);
+            $this->logger->debug(sprintf('Request %s', $this::class), $this->parameters);
         }
 
         // Validate fields
@@ -556,7 +556,7 @@ abstract class AbstractRequest implements Request
         if (!filter_var($uri, FILTER_VALIDATE_URL)) {
             throw new InvalidArgumentException('Uri is not valid');
         }
-        if (strlen($uri) > 200) {
+        if (strlen((string) $uri) > 200) {
             throw new InvalidArgumentException('Uri is too long');
         }
     }
@@ -574,7 +574,7 @@ abstract class AbstractRequest implements Request
      */
     protected function validateYesNo($value)
     {
-        if (!in_array(strtoupper($value), ['Y', 'N'])) {
+        if (!in_array(strtoupper((string) $value), ['Y', 'N'])) {
             throw new InvalidArgumentException("Value should be 'Y' or 'N'.");
         }
     }
@@ -587,7 +587,7 @@ abstract class AbstractRequest implements Request
      */
     protected function validateWin3DS($win3ds)
     {
-        if (!in_array(strtoupper($win3ds), [self::WIN3DS_MAIN, self::WIN3DS_POPUP, self::WIN3DS_POPIX])) {
+        if (!in_array(strtoupper((string) $win3ds), [self::WIN3DS_MAIN, self::WIN3DS_POPUP, self::WIN3DS_POPIX])) {
             throw new InvalidArgumentException('Win3DS is not valid');
         }
     }
@@ -601,26 +601,26 @@ abstract class AbstractRequest implements Request
      */
     public function __call($method, $args)
     {
-        switch (substr($method, 0, 3)) {
+        switch (substr((string) $method, 0, 3)) {
             case 'get' :
-                $field = strtolower($this->_underscore(substr($method,3)));
+                $field = strtolower($this->_underscore(substr((string) $method,3)));
                 if (array_key_exists($field, $this->parameters)) {
                     return $this->parameters[$field];
                 }
                 break;
             case 'set' :
-                $field = strtolower($this->_underscore(substr($method,3)));
+                $field = strtolower($this->_underscore(substr((string) $method,3)));
                 if (in_array($field, $this->ogoneFields)) {
                     $this->parameters[$field] = $args[0];
                     return $this;
                 }
                 break;
             case 'uns' :
-                $key = $this->_underscore(substr($method,3));
+                $key = $this->_underscore(substr((string) $method,3));
                 $this->unsData($key);
                 return $this;
             case 'has' :
-                $field = strtolower($this->_underscore(substr($method,3)));
+                $field = strtolower($this->_underscore(substr((string) $method,3)));
                 return array_key_exists($field, $this->parameters);
         }
 
@@ -648,7 +648,7 @@ abstract class AbstractRequest implements Request
             return $this->parameters;
         }
 
-        return isset($this->parameters[$key]) ? $this->parameters[$key] : null;
+        return $this->parameters[$key] ?? null;
     }
 
     /**
@@ -696,7 +696,10 @@ abstract class AbstractRequest implements Request
     {
         $this->validate();
 
-        $params = array_filter($this->parameters, 'strlen');
+        $params = array_filter(
+            $this->parameters,
+            fn($val) => $val !== null || $val !== false || $val !== ''
+        );
         $params = array_change_key_case($params, CASE_UPPER);
 
         foreach ($params as $key => $value) {

@@ -58,7 +58,7 @@ class SubscriptionPeriodTest extends \PHPUnit_Framework_TestCase
     public function IntervalMustNotBeTooBig()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->createPeriod(SubscriptionPeriod::UNIT_DAILY, 150000000000000000);
+        $this->createPeriod(SubscriptionPeriod::UNIT_DAILY, 150_000_000_000_000_000);
     }
 
     /**
@@ -89,7 +89,7 @@ class SubscriptionPeriodTest extends \PHPUnit_Framework_TestCase
     public function MomentMustNotBeTooBig()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->createPeriod(SubscriptionPeriod::UNIT_DAILY, 12, 150000000000000000);
+        $this->createPeriod(SubscriptionPeriod::UNIT_DAILY, 12, 150_000_000_000_000_000);
     }
 
     /**

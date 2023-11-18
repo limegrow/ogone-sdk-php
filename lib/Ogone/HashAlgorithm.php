@@ -2,7 +2,7 @@
 
 namespace Ogone;
 
-class HashAlgorithm
+class HashAlgorithm implements \Stringable
 {
     const HASH_SHA1 = 'sha1';
     const HASH_SHA256 = 'sha256';
@@ -26,7 +26,7 @@ class HashAlgorithm
         $this->algorithm = $algorithm;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->algorithm;
     }

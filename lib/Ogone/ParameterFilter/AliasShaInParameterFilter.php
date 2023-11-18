@@ -13,7 +13,7 @@ namespace Ogone\ParameterFilter;
 
 class AliasShaInParameterFilter implements ParameterFilter
 {
-    private $allowed = array(
+    private array $allowed = array(
         'ACCEPTURL', 'ALIAS', 'ALIASPERSISTEDAFTERUSE', 'BRAND', 'EXCEPTIONURL',
         'LANGUAGE', 'ORDERID', 'PARAMPLUS', 'PSPID'
     );

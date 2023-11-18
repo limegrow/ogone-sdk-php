@@ -57,10 +57,10 @@ abstract class AbstractPaymentRequest extends AbstractRequest
 
     public function setOrderid($orderid)
     {
-        if (mb_strlen($orderid, 'UTF-8') > 40) {
+        if (mb_strlen((string) $orderid, 'UTF-8') > 40) {
             throw new InvalidArgumentException("Orderid cannot be longer than 40 characters");
         }
-        if (preg_match('/[^a-zA-Z0-9_-]/', $orderid)) {
+        if (preg_match('/[^a-zA-Z0-9_-]/', (string) $orderid)) {
             throw new InvalidArgumentException("Order id cannot contain special characters");
         }
         $this->parameters['orderid'] = $orderid;
@@ -76,7 +76,7 @@ abstract class AbstractPaymentRequest extends AbstractRequest
 
     public function setCom($com)
     {
-        if (mb_strlen($com, 'UTF-8') > 100) {
+        if (mb_strlen((string) $com, 'UTF-8') > 100) {
             throw new InvalidArgumentException("Order description cannot be longer than 100 characters");
         }
         $this->parameters['com'] = $com;
@@ -114,7 +114,7 @@ abstract class AbstractPaymentRequest extends AbstractRequest
 
     public function setEmail($email)
     {
-        if (mb_strlen($email, 'UTF-8') > 50) {
+        if (mb_strlen((string) $email, 'UTF-8') > 50) {
             throw new InvalidArgumentException("Email is too long");
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -127,7 +127,7 @@ abstract class AbstractPaymentRequest extends AbstractRequest
 
     public function setOwnerAddress($owneraddress)
     {
-        if (mb_strlen($owneraddress, 'UTF-8') > 35) {
+        if (mb_strlen((string) $owneraddress, 'UTF-8') > 35) {
             throw new InvalidArgumentException("Owner address is too long");
         }
         $this->parameters['owneraddress'] = $owneraddress;
@@ -137,7 +137,7 @@ abstract class AbstractPaymentRequest extends AbstractRequest
 
     public function setOwnerZip($ownerzip)
     {
-        if (mb_strlen($ownerzip, 'UTF-8') > 10) {
+        if (mb_strlen((string) $ownerzip, 'UTF-8') > 10) {
             throw new InvalidArgumentException("Owner Zip is too long");
         }
         $this->parameters['ownerzip'] = $ownerzip;
@@ -147,7 +147,7 @@ abstract class AbstractPaymentRequest extends AbstractRequest
 
     public function setOwnerTown($ownertown)
     {
-        if (mb_strlen($ownertown, 'UTF-8') > 40) {
+        if (mb_strlen((string) $ownertown, 'UTF-8') > 40) {
             throw new InvalidArgumentException("Owner town is too long");
         }
         $this->parameters['ownertown'] = $ownertown;
@@ -170,14 +170,14 @@ abstract class AbstractPaymentRequest extends AbstractRequest
      */
     public function setOwnercty($ownercty)
     {
-        if (mb_strlen($ownercty, 'UTF-8') > 2) {
+        if (mb_strlen((string) $ownercty, 'UTF-8') > 2) {
             throw new InvalidArgumentException("Owner country code is too long");
         }
 
-        if (!preg_match('/^[A-Z]{2}$/', strtoupper($ownercty))) {
+        if (!preg_match('/^[A-Z]{2}$/', strtoupper((string) $ownercty))) {
             throw new InvalidArgumentException("Illegal country code");
         }
-        $this->parameters['ownercty'] = strtoupper($ownercty);
+        $this->parameters['ownercty'] = strtoupper((string) $ownercty);
 
         return $this;
     }
@@ -190,7 +190,7 @@ abstract class AbstractPaymentRequest extends AbstractRequest
 
     public function setOwnertelno($ownertelno)
     {
-        if (mb_strlen($ownertelno, 'UTF-8') > 30) {
+        if (mb_strlen((string) $ownertelno, 'UTF-8') > 30) {
             throw new InvalidArgumentException("Owner phone is too long");
         }
         $this->parameters['ownertelno'] = $ownertelno;
@@ -232,7 +232,7 @@ abstract class AbstractPaymentRequest extends AbstractRequest
 
     public function setParamvar($paramvar)
     {
-        if (mb_strlen($paramvar, 'UTF-8') < 2 || mb_strlen($paramvar, 'UTF-8') > 50) {
+        if (mb_strlen((string) $paramvar, 'UTF-8') < 2 || mb_strlen((string) $paramvar, 'UTF-8') > 50) {
             throw new InvalidArgumentException("Paramvar must be between 2 and 50 characters in length");
         }
         $this->parameters['paramvar'] = $paramvar;

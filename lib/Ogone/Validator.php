@@ -387,9 +387,8 @@ class Validator
 
     /**
      * Field Name
-     * @var string
      */
-    private $fieldName;
+    private string $fieldName;
 
     /**
      * Field Value
@@ -399,9 +398,8 @@ class Validator
 
     /**
      * Options of Validation
-     * @var array
      */
-    private $validationOptions = [];
+    private array $validationOptions = [];
 
     /**
      * Validate constructor.
@@ -414,13 +412,13 @@ class Validator
     {
         // Check if a string ends with a number
         // Check parameters is like ITEMID*
-        $last = mb_substr($key, -1, 1, 'UTF-8');
-        if (is_numeric($last) && in_array(rtrim($key, $last) . '*', array_keys(self::$fields))) {
-            $key = rtrim($key, $last);
+        $last = mb_substr((string) $key, -1, 1, 'UTF-8');
+        if (is_numeric($last) && in_array(rtrim((string) $key, $last) . '*', array_keys(self::$fields))) {
+            $key = rtrim((string) $key, $last);
         }
 
 
-        $this->fieldName = mb_strtolower($key, 'UTF-8');
+        $this->fieldName = mb_strtolower((string) $key, 'UTF-8');
         $this->fieldValue = $value;
         $this->validationOptions = $options;
     }
@@ -471,7 +469,7 @@ class Validator
             }
 
             // Validate size
-            if (isset($rules['size']) && mb_strlen($this->fieldValue, 'UTF-8') > $rules['size']) {
+            if (isset($rules['size']) && mb_strlen((string)$this->fieldValue, 'UTF-8') > $rules['size']) {
                 throw new InvalidArgumentException(sprintf('%s is too long', $this->fieldName));
             }
 

@@ -110,7 +110,7 @@ class AllParametersShaComposerTest extends \PHPUnit_Framework_TestCase
             'BRAND' => 'VISA',
             'CARDNO' => 'xxxxxxxxxxxx1111',
             'NCERROR' => 0,
-            'PAYID' => 32100123,
+            'PAYID' => 32_100_123,
             'PM' => 'CreditCard',
             'STATUS' => 9,
             'orderID' => 12,

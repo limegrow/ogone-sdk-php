@@ -104,7 +104,7 @@ class DirectLinkMaintenanceResponseTest extends \PHPUnit_Framework_TestCase
                 NCERRORPLUS="!"
                 ACCEPTANCE=""
                 STATUS="91"
-                AMOUNT="'.(($amount) ? $amount : '1').'"
+                AMOUNT="'.($amount ?: '1').'"
                 CURRENCY="GBP">
                 </ncresponse>';
 

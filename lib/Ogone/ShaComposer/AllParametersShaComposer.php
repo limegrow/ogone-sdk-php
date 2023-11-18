@@ -28,12 +28,9 @@ class AllParametersShaComposer implements ShaComposer
     /**
      * @var string Passphrase
      */
-    private $passphrase;
+    private string $passphrase;
 
-    /**
-     * @var HashAlgorithm
-     */
-    private $hashAlgorithm;
+    private \Ogone\HashAlgorithm $hashAlgorithm;
 
     public function __construct(Passphrase $passphrase, HashAlgorithm $hashAlgorithm = null)
     {

@@ -2,7 +2,7 @@
 namespace Ogone\DirectLink;
 
 
-class MaintenanceOperation
+class MaintenanceOperation implements \Stringable
 {
     const OPERATION_AUTHORISATION_RENEW = 'REN';
     const OPERATION_AUTHORISATION_DELETE = 'DEL';
@@ -28,7 +28,7 @@ class MaintenanceOperation
         return $this->operation === $other->operation;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->operation;
     }

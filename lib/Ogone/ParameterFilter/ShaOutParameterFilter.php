@@ -13,7 +13,7 @@ namespace Ogone\ParameterFilter;
 
 class ShaOutParameterFilter implements ParameterFilter
 {
-    private $allowed = array(
+    private array $allowed = array(
         'AAVADDRESS',
         'AAVCHECK',
         'AAVMAIL',

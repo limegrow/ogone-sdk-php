@@ -81,7 +81,7 @@ class EcommercePaymentRequestTest extends TestCase
             array('setAccepturl', $notAUri),
             array('setAmount', 10.50),
             array('setAmount', -1),
-            array('setAmount', 1000000000000000),
+            array('setAmount', 1_000_000_000_000_000),
             array('setBrand', 'Oxfam'),
             array('setCancelurl', $notAUri),
             array('setCancelurl', $longUri),

@@ -110,7 +110,7 @@ class DirectLinkPaymentResponseTest extends \PHPUnit_Framework_TestCase
                 NCERROR=""
                 ACCEPTANCE=""
                 STATUS="5"
-                AMOUNT="'.(($amount) ? $amount : '1').'"
+                AMOUNT="'.($amount ?: '1').'"
                 CURRENCY="EUR"
                 PM=""
                 BRAND=""

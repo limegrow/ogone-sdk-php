@@ -2,7 +2,7 @@
 
 namespace Ogone;
 
-abstract class AbstractAlias
+abstract class AbstractAlias implements \Stringable
 {
     const OPERATION_BY_MERCHANT = 'BYMERCHANT';
     const OPERATION_BY_PSP = 'BYPSP';
@@ -113,7 +113,7 @@ abstract class AbstractAlias
      * ы
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->alias;
     }

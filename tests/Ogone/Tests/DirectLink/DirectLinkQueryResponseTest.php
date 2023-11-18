@@ -107,7 +107,7 @@ class DirectLinkQueryResponseTest extends \PHPUnit_Framework_TestCase
                 ACCEPTANCE="test123"
                 STATUS="91"
                 ECI="7"
-                AMOUNT="'.(($amount) ? $amount : '4.5').'"
+                AMOUNT="'.($amount ?: '4.5').'"
                 CURRENCY="GBP"
                 PM="CreditCard"
                 BRAND="VISA"

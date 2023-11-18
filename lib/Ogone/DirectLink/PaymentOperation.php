@@ -2,7 +2,7 @@
 namespace Ogone\DirectLink;
 
 
-class PaymentOperation
+class PaymentOperation implements \Stringable
 {
     const REQUEST_FOR_AUTHORISATION = 'RES';
     const REQUEST_FOR_DIRECT_SALE = 'SAL';
@@ -25,7 +25,7 @@ class PaymentOperation
         return $this->operation === $other->operation;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->operation;
     }
